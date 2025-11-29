@@ -69,12 +69,19 @@ Izmanto shadcn/ui komponentes:
 
 ## Tehniskā Stack
 - **Frontend**: React 19 + TypeScript
+- **Backend**: Node.js + Hono.js
 - **Styling**: Tailwind CSS + Custom CSS
 - **UI Components**: shadcn/ui
 - **Icons**: Lucide React
 - **Animations**: Tailwind + Custom keyframes
 - **Fonts**: Google Fonts (Comic Neue, Permanent Marker)
 - **Minting Widget**: nfts2.me iframe integration
+- **Deployment**: Vercel (Node.js runtime)
+
+## Servera Konfigurācija
+- `src/server/app.node.ts` - Node.js production serveris Vercel deployment
+- `rsbuild.config.node.ts` - Node.js servera build konfigurācija
+- `vercel.json` - Vercel deployment konfigurācija
 
 ## Funkcionalitāte (V1)
 - ✅ Vizuāla interface ar krītiņu stilu

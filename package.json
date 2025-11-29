@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "rsbuild dev",
-    "build": "rsbuild build -c rsbuild.config.ts && rsbuild build -c rsbuild.config.server.ts",
+    "build": "rsbuild build -c rsbuild.config.ts && rsbuild build -c rsbuild.config.node.ts",
     "build:client": "rsbuild build -c rsbuild.config.ts",
-    "build:server": "rsbuild build -c rsbuild.config.server.ts",
+    "build:server": "rsbuild build -c rsbuild.config.node.ts",
     "type-check": "tsc -b --pretty",
     "lint": "tsc -b --pretty",
     "preview": "rsbuild preview",
-    "start": "cd ./dist && deno run --allow-net --allow-read server.cjs"
+    "start": "node ./dist/server.cjs"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.4",

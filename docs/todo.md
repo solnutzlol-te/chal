@@ -29,5 +29,13 @@
 - [x] Atjaunināt index.html ar SEO
 - [x] Izveidot prd.md un overview.md
 
+## Phase 6: Vercel Deployment
+- [x] Izveidot Node.js servera failu (app.node.ts)
+- [x] Izveidot Node.js build konfigurāciju (rsbuild.config.node.ts)
+- [x] Atjaunināt package.json ar Node.js start komandām
+- [x] Izveidot vercel.json konfigurācijas failu
+- [x] Izveidot DEPLOYMENT.md ar pilnām instrukcijām
+- [x] Atjaunināt overview.md ar deployment informāciju
+
 ## ✅ PABEIGTS
-Visi galvenie uzdevumi pabeigti! NFT mājaslapa ar krītiņu stilu ir gatava!
+Visi galvenie uzdevumi pabeigti! NFT mājaslapa ar krītiņu stilu ir gatava deployment uz Vercel!
