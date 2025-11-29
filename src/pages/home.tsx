@@ -20,7 +20,7 @@ import Navbar from "@/components/navbar";
 
 export default function Index() {
   const totalSupply = 10000;
-  const mintedCount = 135; 
+  const mintedCount = 138; 
   const price = 0; 
 
   const nftGallery = [
