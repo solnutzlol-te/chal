@@ -107,33 +107,7 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-sky overflow-hidden">
       <Navbar />
-      {/* Decorative clouds */}
-      <div className="fixed top-10 left-10 w-32 h-16 cloud-shape opacity-80 animate-float" style={{ animationDelay: '0s' }} />
-      <div className="fixed top-20 right-20 w-40 h-20 cloud-shape opacity-70 animate-float" style={{ animationDelay: '1s' }} />
-      <div className="fixed top-40 left-1/3 w-28 h-14 cloud-shape opacity-60 animate-float" style={{ animationDelay: '2s' }} />
-
-      {/* Bunting decoration */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-20 overflow-hidden pointer-events-none">
-        <div className="flex justify-around items-start pt-0">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[35px] border-doodle-black"
-              style={{
-                borderTopColor: [
-                  'hsl(350, 100%, 85%)',
-                  'hsl(120, 50%, 85%)',
-                  'hsl(55, 100%, 85%)',
-                  'hsl(280, 60%, 85%)',
-                  'hsl(25, 100%, 85%)',
-                ][i % 5],
-              }}
-            />
-          ))}
-        </div>
-        <div className="absolute top-0 left-0 right-0 h-1 bg-doodle-black" />
-      </div>
-
+      
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
