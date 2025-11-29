@@ -47,19 +47,19 @@ export default function Index() {
   };
 
   const nftGallery = [
-    { id: 1, name: "Happy Chalky #1", image: "nft-1.png", rarity: "Common" },
-    { id: 2, name: "Cool Chalky #2", image: "nft-2.png", rarity: "Rare" },
-    { id: 3, name: "Chill Chalky #3", image: "/nft-3.png", rarity: "Common" },
-    { id: 4, name: "Wavy Chalky #4", image: "/nft-4.png", rarity: "Rare" },
-    { id: 5, name: "Silly Chalky #5", image: "/nft-5.png", rarity: "Epic" },
-    { id: 6, name: "Jolly Chalky #6", image: "/nft-6.png", rarity: "Common" },
+    { id: 1, name: "Flame Chalky #1", image: "nft-1.png", rarity: "Legendary" },
+    { id: 2, name: "Silly Chalky #2", image: "nft-5.png", rarity: "Legendary" },
+    { id: 3, name: "Positive Chalky", image: "/nft-3.png", rarity: "Common" },
+    { id: 4, name: "Sad Chalky #4", image: "/nft-4.png", rarity: "Common" },
+    { id: 5, name: "Friendly Chalky #5", image: "/nft-2.png", rarity: "Epic" },
+    { id: 6, name: "Cowboy Chalky", image: "/nft-6.png", rarity: "Rare" },
   ];
 
   const roadmapItems = [
     {
       phase: "Phase 1",
       title: "Launch & Mint",
-      description: "100% FREE mint for everyone!",
+      description: "FREE mint for everyone!",
       icon: Rocket,
       status: "current",
     },
@@ -93,11 +93,11 @@ export default function Index() {
     },
     {
       question: "How many can I mint?",
-      answer: "You can mint up to 10 NFTs per wallet in one transaction.",
+      answer: "There is no limit.",
     },
     {
       question: "What blockchain is this on?",
-      answer: "Our NFTs are minted on Ethereum mainnet for maximum security and compatibility.",
+      answer: "Our NFTs are minted on Monad blockchain.",
     },
     {
       question: "What utility do these NFTs have?",
@@ -390,15 +390,21 @@ export default function Index() {
             Join our community and spread the chalk art love! 🎨💜
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Button className="btn-doodle bg-pastel-purple hover:bg-pastel-purple-dark text-doodle-black">
-              Twitter
-            </Button>
+            <a href="https://twitter.com/ChalkiesMON" target="_blank" rel="noopener noreferrer">
+  <Button className="btn-doodle bg-pastel-purple hover:bg-pastel-purple-dark text-doodle-black">
+    Twitter
+  </Button>
+</a>
+          <a href="https://magiceden.io/collections/monad/0x877f53Ec1a6257e78B3b656e7612cc19df05615F" target="_blank" rel="noopener noreferrer">
             <Button className="btn-doodle bg-pastel-pink hover:bg-pastel-pink-dark text-doodle-black">
-              Discord
+              MagicEden
             </Button>
+          </a>
+            <a href="https://opensea.io/collection/chalkies-147212371" target="_blank" rel="noopener noreferrer">
             <Button className="btn-doodle bg-pastel-yellow hover:bg-pastel-yellow-dark text-doodle-black">
               OpenSea
             </Button>
+            </a>
           </div>
           <p className="text-sm text-doodle-black-light font-semibold">
             © 2025 Chalkies NFT. All rights reserved. Made with ❤️ and chalk.
