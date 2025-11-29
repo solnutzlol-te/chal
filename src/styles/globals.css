@@ -172,16 +172,6 @@
     @apply transition-all duration-300;
     @apply hover:-translate-y-2;
   }
-  
-  /* Bunting/Flag decoration */
-  .bunting-flag {
-    width: 0;
-    height: 0;
-    border-left: 30px solid transparent;
-    border-right: 30px solid transparent;
-    border-top: 40px solid currentColor;
-    border: 3px solid hsl(0, 0%, 10%);
-  }
 }
 
 /* Custom scrollbar */
