@@ -19,7 +19,7 @@ import {
 import Navbar from "@/components/navbar";
 
 export default function Index() {
-  const totalSupply = 10000;
+  const totalSupply = 1999;
   const mintedCount = 138; 
   const price = 0; 
 
