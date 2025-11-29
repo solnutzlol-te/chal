@@ -32,7 +32,8 @@ const firebaseConfig = {
   projectId: "chalkies-memes",
   storageBucket: "chalkies-memes.firebasestorage.app",
   messagingSenderId: "689765838188",
-  appId: "1:689765838188:web:d86e5a21e2b4946d855749"
+  appId: "1:689765838188:web:d86e5a21e2b4946d855749",
+  measurementId: "G-TDBZ90RD1T"
 };
 
 /**
