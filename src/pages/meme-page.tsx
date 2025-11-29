@@ -16,15 +16,6 @@ export default function MemePage() {
       {/* Main Content */}
       <section className="py-12 px-4">
         <div className="container mx-auto">
-          {/* Back Button */}
-          <div className="mb-6">
-            <Link to="/">
-              <Button className="btn-doodle bg-white hover:bg-pastel-yellow text-doodle-black">
-                <Home className="mr-2 w-5 h-5" />
-                Back to Home
-              </Button>
-            </Link>
-          </div>
 
           {/* Meme Generator */}
           <MemeGenerator />
