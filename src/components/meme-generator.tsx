@@ -1,47 +1,56 @@
 /**
- * Chalkies Meme Generator Component - V6.3 Debug & Refine (FIXED SCALE HANDLE)
+ * Chalkies Meme Generator Component - V6.4
  * 
- * Profesionāls meme generator ar DIRECT CANVAS CONTROLS kā Canva/Figma!
+ * FIX: Scale handle strādā (lokālās koordinātas + rotācija).
  */
 
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Download, Share2, ImageIcon, Type, Upload, RotateCcw, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Download,
+  Share2,
+  ImageIcon,
+  Type,
+  Upload,
+  RotateCcw,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Popular Meme Templates (Top 6 most popular)
 const defaultTemplates = [
-  { 
-    id: 1, 
-    src: "https://i.imgflip.com/30b1gx.jpg", 
-    name: "Drake Hotline Bling" 
+  {
+    id: 1,
+    src: "https://i.imgflip.com/30b1gx.jpg",
+    name: "Drake Hotline Bling",
   },
-  { 
-    id: 2, 
-    src: "https://i.imgflip.com/26am.jpg", 
-    name: "Surprised Pikachu" 
+  {
+    id: 2,
+    src: "https://i.imgflip.com/26am.jpg",
+    name: "Surprised Pikachu",
   },
-  { 
-    id: 3, 
-    src: "https://i.imgflip.com/1bij.jpg", 
-    name: "Success Kid" 
+  {
+    id: 3,
+    src: "https://i.imgflip.com/1bij.jpg",
+    name: "Success Kid",
   },
-  { 
-    id: 4, 
-    src: "https://i.imgflip.com/4t0m5.jpg", 
-    name: "Woman Yelling at Cat" 
+  {
+    id: 4,
+    src: "https://i.imgflip.com/4t0m5.jpg",
+    name: "Woman Yelling at Cat",
   },
-  { 
-    id: 5, 
-    src: "https://i.imgflip.com/1g8my4.jpg", 
-    name: "Distracted Boyfriend" 
+  {
+    id: 5,
+    src: "https://i.imgflip.com/1g8my4.jpg",
+    name: "Distracted Boyfriend",
   },
-  { 
-    id: 6, 
-    src: "https://i.imgflip.com/2/345v97.jpg", 
-    name: "Bernie Sanders" 
+  {
+    id: 6,
+    src: "https://i.imgflip.com/2/345v97.jpg",
+    name: "Bernie Sanders",
   },
 ];
 
@@ -50,33 +59,69 @@ const moreTemplates = [
   { id: 7, src: "https://i.imgflip.com/5c7lwq.jpg", name: "Trade Offer" },
   { id: 8, src: "https://i.imgflip.com/2fm6x.jpg", name: "Mocking SpongeBob" },
   { id: 9, src: "https://i.imgflip.com/1otk96.jpg", name: "Trump Signing" },
-  { id: 10, src: "https://i.imgflip.com/3lmzyx.jpg", name: "Bernie I Am Once Again" },
-  { id: 11, src: "https://i.imgflip.com/23ls.jpg", name: "Third World Skeptical Kid" },
+  {
+    id: 10,
+    src: "https://i.imgflip.com/3lmzyx.jpg",
+    name: "Bernie I Am Once Again",
+  },
+  {
+    id: 11,
+    src: "https://i.imgflip.com/23ls.jpg",
+    name: "Third World Skeptical Kid",
+  },
   { id: 12, src: "https://i.imgflip.com/92.jpg", name: "Bad Luck Brian" },
   { id: 13, src: "https://i.imgflip.com/1ihzfe.jpg", name: "Expanding Brain" },
-  { id: 14, src: "https://i.imgflip.com/9ehk.jpg", name: "Overly Attached Girlfriend" },
+  {
+    id: 14,
+    src: "https://i.imgflip.com/9ehk.jpg",
+    name: "Overly Attached Girlfriend",
+  },
   { id: 15, src: "https://i.imgflip.com/6zkx.jpg", name: "X, X Everywhere" },
   { id: 16, src: "https://i.imgflip.com/9vct.jpg", name: "Y U No" },
-  { id: 17, src: "https://i.imgflip.com/1ur9b0.jpg", name: "Spider-Man Pointing" },
-  { id: 18, src: "https://i.imgflip.com/1c1uej.jpg", name: "Leonardo DiCaprio Cheers" },
+  {
+    id: 17,
+    src: "https://i.imgflip.com/1ur9b0.jpg",
+    name: "Spider-Man Pointing",
+  },
+  {
+    id: 18,
+    src: "https://i.imgflip.com/1c1uej.jpg",
+    name: "Leonardo DiCaprio Cheers",
+  },
   { id: 19, src: "https://i.imgflip.com/7p0pn.jpg", name: "Roll Safe Think" },
   { id: 20, src: "https://i.imgflip.com/4/2cp1.jpg", name: "Matrix Morpheus" },
-  { id: 21, src: "https://i.imgflip.com/5gimtn.jpg", name: "Anakin Padme 4 Panel" },
-  { id: 22, src: "https://i.imgflip.com/2kbn1e.jpg", name: "They're The Same Picture" },
+  {
+    id: 21,
+    src: "https://i.imgflip.com/5gimtn.jpg",
+    name: "Anakin Padme 4 Panel",
+  },
+  {
+    id: 22,
+    src: "https://i.imgflip.com/2kbn1e.jpg",
+    name: "They're The Same Picture",
+  },
   { id: 23, src: "https://i.imgflip.com/1vtf2w.jpg", name: "Change My Mind" },
   { id: 24, src: "https://i.imgflip.com/1hcn2j.jpg", name: "Arthur Fist" },
-  { id: 25, src: "https://i.imgflip.com/1b42wl.jpg", name: "American Chopper Argument" },
-  { id: 26, src: "https://i.imgflip.com/24y43o.jpg", name: "Batman Slapping Robin" },
+  {
+    id: 25,
+    src: "https://i.imgflip.com/1b42wl.jpg",
+    name: "American Chopper Argument",
+  },
+  {
+    id: 26,
+    src: "https://i.imgflip.com/24y43o.jpg",
+    name: "Batman Slapping Robin",
+  },
 ];
 
 interface TextPosition {
-  x: number; // X position (0-1, relative to canvas width)
-  y: number; // Y position (0-1, relative to canvas height)
+  x: number; // 0–1
+  y: number; // 0–1
 }
 
 interface TextTransform {
-  scale: number; // Text scale (0.5 - 2.0, default 1.0)
-  rotation: number; // Text rotation in degrees (-180 to 180, default 0)
+  scale: number; // 0.3–3
+  rotation: number; // grādi
 }
 
 interface AlignmentGuides {
@@ -85,7 +130,7 @@ interface AlignmentGuides {
   showSymmetricSpacing: boolean;
 }
 
-type DragMode = 'move' | 'rotate' | 'scale' | null;
+type DragMode = "move" | "rotate" | "scale" | null;
 
 export default function MemeGenerator() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -93,44 +138,56 @@ export default function MemeGenerator() {
   const [bottomText, setBottomText] = useState("");
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showMoreTemplates, setShowMoreTemplates] = useState(false);
-  
-  // Text positioning state (relative 0-1 coordinates)
-  const [topTextPos, setTopTextPos] = useState<TextPosition>({ x: 0.5, y: 0.08 });
-  const [bottomTextPos, setBottomTextPos] = useState<TextPosition>({ x: 0.5, y: 0.92 });
-  
-  // Text transform state (scale + rotation)
-  const [topTextTransform, setTopTextTransform] = useState<TextTransform>({ scale: 1.0, rotation: 0 });
-  const [bottomTextTransform, setBottomTextTransform] = useState<TextTransform>({ scale: 1.0, rotation: 0 });
-  
-  // Selection state
-  const [selectedText, setSelectedText] = useState<'top' | 'bottom' | null>(null);
-  
-  // Drag state
+
+  const [topTextPos, setTopTextPos] = useState<TextPosition>({
+    x: 0.5,
+    y: 0.08,
+  });
+  const [bottomTextPos, setBottomTextPos] = useState<TextPosition>({
+    x: 0.5,
+    y: 0.92,
+  });
+
+  const [topTextTransform, setTopTextTransform] = useState<TextTransform>({
+    scale: 1,
+    rotation: 0,
+  });
+  const [bottomTextTransform, setBottomTextTransform] =
+    useState<TextTransform>({
+      scale: 1,
+      rotation: 0,
+    });
+
+  const [selectedText, setSelectedText] = useState<"top" | "bottom" | null>(
+    null
+  );
   const [dragMode, setDragMode] = useState<DragMode>(null);
-  const [dragStart, setDragStart] = useState<{ x: number; y: number; initialRotation?: number; initialScale?: number } | null>(null);
-  
-  // Alignment guides state
+  const [dragStart, setDragStart] = useState<{
+    x: number;
+    y: number;
+    initialRotation?: number;
+    initialScale?: number;
+  } | null>(null);
+
   const [alignmentGuides, setAlignmentGuides] = useState<AlignmentGuides>({
     showHorizontalCenter: false,
     showVerticalAlignment: false,
     showSymmetricSpacing: false,
   });
-  
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Calculate text metrics (used for hit detection and bounding box)
   const getTextMetrics = (text: string, transform: TextTransform) => {
     const baseFontSize = 60;
     const fontSize = baseFontSize * transform.scale;
-    const width = text.length * fontSize * 0.6; // Approximate width
-    const height = fontSize * 1.2; // Approximate height
+    const width = text.length * fontSize * 0.6;
+    const height = fontSize * 1.2;
     return { width, height, fontSize };
   };
 
-  // Calculate alignment guides based on text positions
   useEffect(() => {
     if (!topText || !bottomText) {
       setAlignmentGuides({
@@ -141,21 +198,20 @@ export default function MemeGenerator() {
       return;
     }
 
-    const tolerance = 0.02; // 2% tolerance for alignment detection
-    
-    // Check if both texts are horizontally centered
-    const bothCentered = 
-      Math.abs(topTextPos.x - 0.5) < tolerance && 
+    const tolerance = 0.02;
+
+    const bothCentered =
+      Math.abs(topTextPos.x - 0.5) < tolerance &&
       Math.abs(bottomTextPos.x - 0.5) < tolerance;
-    
-    // Check if both texts have the same X position (vertically aligned)
-    const verticallyAligned = Math.abs(topTextPos.x - bottomTextPos.x) < tolerance;
-    
-    // Check if texts are symmetrically spaced from edges
+
+    const verticallyAligned =
+      Math.abs(topTextPos.x - bottomTextPos.x) < tolerance;
+
     const topDistanceFromTop = topTextPos.y;
     const bottomDistanceFromBottom = 1 - bottomTextPos.y;
-    const symmetricSpacing = Math.abs(topDistanceFromTop - bottomDistanceFromBottom) < tolerance;
-    
+    const symmetricSpacing =
+      Math.abs(topDistanceFromTop - bottomDistanceFromBottom) < tolerance;
+
     setAlignmentGuides({
       showHorizontalCenter: bothCentered,
       showVerticalAlignment: verticallyAligned && !bothCentered,
@@ -163,119 +219,115 @@ export default function MemeGenerator() {
     });
   }, [topTextPos, bottomTextPos, topText, bottomText]);
 
-  // All templates combined
-  const allTemplates = showMoreTemplates 
-    ? [...defaultTemplates, ...moreTemplates] 
+  const allTemplates = showMoreTemplates
+    ? [...defaultTemplates, ...moreTemplates]
     : defaultTemplates;
 
-  // Handle custom image upload
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file!');
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file!");
       return;
     }
-
-    // Create object URL from file
     const imageUrl = URL.createObjectURL(file);
     setSelectedImage(imageUrl);
     setImageLoaded(false);
   };
 
-  // Reset text positions and transforms to defaults
   const handleResetPositions = () => {
     setTopTextPos({ x: 0.5, y: 0.08 });
     setBottomTextPos({ x: 0.5, y: 0.92 });
-    setTopTextTransform({ scale: 1.0, rotation: 0 });
-    setBottomTextTransform({ scale: 1.0, rotation: 0 });
+    setTopTextTransform({ scale: 1, rotation: 0 });
+    setBottomTextTransform({ scale: 1, rotation: 0 });
     setSelectedText(null);
-    console.log('🔄 Reset all positions and transforms');
+    console.log("🔄 Reset all positions and transforms");
   };
 
-  // Calculate distance between two points
-  const getDistance = (x1: number, y1: number, x2: number, y2: number) => {
-    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-  };
+  const getDistance = (x1: number, y1: number, x2: number, y2: number) =>
+    Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
-  // Calculate angle between two points (in degrees)
-  const getAngle = (x1: number, y1: number, x2: number, y2: number) => {
-    return Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
-  };
+  const getAngle = (x1: number, y1: number, x2: number, y2: number) =>
+    (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
 
-  // ✅ FIXED: handle hit detection (scale handle ņem vērā rotāciju, rotate paliek globāli virs teksta)
+  /**
+   * ✅ NEW: hit detection lokālajās koordinātēs
+   * 1) pārvēršam peles pozīciju uz teksta lokālo sistēmu
+   * 2) pārbaudām rotate, scale un body hit’us
+   */
   const checkHandleHit = (
-    mouseX: number, 
-    mouseY: number, 
+    mouseX: number,
+    mouseY: number,
     text: string,
-    position: TextPosition, 
+    position: TextPosition,
     transform: TextTransform,
     canvasWidth: number,
     canvasHeight: number
-  ): { type: 'rotate' | 'scale' | 'move' | null } => {
+  ): { type: "rotate" | "scale" | "move" | null } => {
     const textX = canvasWidth * position.x;
     const textY = canvasHeight * position.y;
     const metrics = getTextMetrics(text, transform);
-    
-    const rotateHandleRadius = 20;
-    const scaleHandleRadius = 20;
-    const handleDistance = metrics.height * 0.8;
 
     const halfWidth = metrics.width / 2;
     const halfHeight = metrics.height / 2;
+    const handleDistance = metrics.height * 0.8;
+    const rotateHandleRadius = 20;
+    const scaleHandleSize = 24; // nedaudz lielāks, vieglāk trāpīt
 
-    // 🟢 ROTATE HANDLE – nav pagriezts, vienkārši virs teksta
-    const rotateX = textX;
-    const rotateY = textY - handleDistance;
-    const distToRotate = getDistance(mouseX, mouseY, rotateX, rotateY);
+    // Global -> local (rotējam atpakaļ par -rotation)
+    const rad = (transform.rotation * Math.PI) / 180;
+    const cos = Math.cos(-rad);
+    const sin = Math.sin(-rad);
+
+    const dx = mouseX - textX;
+    const dy = mouseY - textY;
+
+    const localX = dx * cos - dy * sin;
+    const localY = dx * sin + dy * cos;
 
     console.log(
-      `🟢 Rotate handle check: mouse(${mouseX.toFixed(0)}, ${mouseY.toFixed(
-        0
-      )}) vs handle(${rotateX.toFixed(0)}, ${rotateY.toFixed(
-        0
-      )}) = dist ${distToRotate.toFixed(1)} (need < ${rotateHandleRadius})`
+      `👀 Local coords: (${localX.toFixed(1)}, ${localY.toFixed(1)}) rotation=${transform.rotation.toFixed(
+        1
+      )}`
     );
 
+    // 🟢 ROTATE handle: aplis ap (0, -handleDistance)
+    const distToRotate = getDistance(localX, localY, 0, -handleDistance);
+    console.log(
+      `🟢 Rotate check: dist=${distToRotate.toFixed(
+        1
+      )}, need < ${rotateHandleRadius}`
+    );
     if (distToRotate < rotateHandleRadius) {
-      console.log("✅ HIT ROTATE HANDLE!");
+      console.log("✅ HIT ROTATE HANDLE (local)!");
       return { type: "rotate" };
     }
 
-    // 🔁 Rotācijas matrica priekš scale handle (tas ir tekstam līdzi pagriezts stūris)
-    const rad = (transform.rotation * Math.PI) / 180;
-    const cos = Math.cos(rad);
-    const sin = Math.sin(rad);
-
-    const localToGlobal = (lx: number, ly: number) => ({
-      x: textX + lx * cos - ly * sin,
-      y: textY + lx * sin + ly * cos,
-    });
-
-    // 🔵 SCALE HANDLE – top-right stūris, pagriezts kopā ar tekstu
-    const scaleLocalX = halfWidth;
-    const scaleLocalY = -halfHeight;
-    const scaleGlobal = localToGlobal(scaleLocalX, scaleLocalY);
-    const distToScale = getDistance(mouseX, mouseY, scaleGlobal.x, scaleGlobal.y);
+    // 🔵 SCALE handle: kvadrāts ap (halfWidth, -halfHeight)
+    const scaleCenterX = halfWidth;
+    const scaleCenterY = -halfHeight;
+    const withinScaleX =
+      Math.abs(localX - scaleCenterX) < scaleHandleSize / 2;
+    const withinScaleY =
+      Math.abs(localY - scaleCenterY) < scaleHandleSize / 2;
 
     console.log(
-      `🔵 Scale handle check: mouse(${mouseX.toFixed(0)}, ${mouseY.toFixed(
-        0
-      )}) vs handle(${scaleGlobal.x.toFixed(0)}, ${scaleGlobal.y.toFixed(
-        0
-      )}) = dist ${distToScale.toFixed(1)} (need < ${scaleHandleRadius})`
+      `🔵 Scale check: local=(${localX.toFixed(1)}, ${localY.toFixed(
+        1
+      )}) vs center=(${scaleCenterX.toFixed(1)}, ${scaleCenterY.toFixed(
+        1
+      )})`
     );
 
-    if (distToScale < scaleHandleRadius) {
-      console.log("✅ HIT SCALE HANDLE!");
+    if (withinScaleX && withinScaleY) {
+      console.log("✅ HIT SCALE HANDLE (local)!");
       return { type: "scale" };
     }
 
     // ✋ Teksta ķermenis (move)
-    const distToCenter = getDistance(mouseX, mouseY, textX, textY);
-    if (distToCenter < Math.max(halfWidth, halfHeight)) {
+    const insideBody =
+      Math.abs(localX) <= halfWidth && Math.abs(localY) <= halfHeight;
+    if (insideBody) {
       console.log("✅ HIT TEXT BODY (move mode)");
       return { type: "move" };
     }
@@ -283,173 +335,177 @@ export default function MemeGenerator() {
     return { type: null };
   };
 
-  // Mouse handlers for direct canvas manipulation
   const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current) {
-      console.log('❌ No canvas ref');
-      return;
-    }
-    
+    if (!canvasRef.current) return;
+
     const rect = canvasRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     const canvasWidth = rect.width;
     const canvasHeight = rect.height;
-    
-    console.log(`\n🖱️ MOUSE DOWN at (${mouseX.toFixed(0)}, ${mouseY.toFixed(0)})`);
-    
-    // Check top text handles first (if selected or has text)
+
+    console.log(
+      `\n🖱️ MOUSE DOWN at (${mouseX.toFixed(0)}, ${mouseY.toFixed(0)})`
+    );
+
     if (topText) {
-      console.log('🔍 Checking TOP text handles...');
-      const topHit = checkHandleHit(mouseX, mouseY, topText, topTextPos, topTextTransform, canvasWidth, canvasHeight);
+      console.log("🔍 Checking TOP text...");
+      const topHit = checkHandleHit(
+        mouseX,
+        mouseY,
+        topText,
+        topTextPos,
+        topTextTransform,
+        canvasWidth,
+        canvasHeight
+      );
       if (topHit.type) {
-        console.log(`✅ TOP text HIT detected: ${topHit.type}`);
-        setSelectedText('top');
+        setSelectedText("top");
         setDragMode(topHit.type);
-        
-        setDragStart({ 
-          x: mouseX, 
+        setDragStart({
+          x: mouseX,
           y: mouseY,
           initialRotation: topTextTransform.rotation,
-          initialScale: topTextTransform.scale
+          initialScale: topTextTransform.scale,
         });
-        console.log(`📌 Drag started: mode=${topHit.type}, initialRotation=${topTextTransform.rotation}, initialScale=${topTextTransform.scale}`);
+        console.log(
+          `📌 TOP drag start: mode=${topHit.type}, rot=${topTextTransform.rotation}, scale=${topTextTransform.scale}`
+        );
         return;
       }
     }
-    
-    // Check bottom text handles
+
     if (bottomText) {
-      console.log('🔍 Checking BOTTOM text handles...');
-      const bottomHit = checkHandleHit(mouseX, mouseY, bottomText, bottomTextPos, bottomTextTransform, canvasWidth, canvasHeight);
+      console.log("🔍 Checking BOTTOM text...");
+      const bottomHit = checkHandleHit(
+        mouseX,
+        mouseY,
+        bottomText,
+        bottomTextPos,
+        bottomTextTransform,
+        canvasWidth,
+        canvasHeight
+      );
       if (bottomHit.type) {
-        console.log(`✅ BOTTOM text HIT detected: ${bottomHit.type}`);
-        setSelectedText('bottom');
+        setSelectedText("bottom");
         setDragMode(bottomHit.type);
-        
-        setDragStart({ 
-          x: mouseX, 
+        setDragStart({
+          x: mouseX,
           y: mouseY,
           initialRotation: bottomTextTransform.rotation,
-          initialScale: bottomTextTransform.scale
+          initialScale: bottomTextTransform.scale,
         });
-        console.log(`📌 Drag started: mode=${bottomHit.type}, initialRotation=${bottomTextTransform.rotation}, initialScale=${bottomTextTransform.scale}`);
+        console.log(
+          `📌 BOTTOM drag start: mode=${bottomHit.type}, rot=${bottomTextTransform.rotation}, scale=${bottomTextTransform.scale}`
+        );
         return;
       }
     }
-    
-    // No handle hit - deselect
-    console.log('❌ No handle hit - deselecting');
+
+    console.log("❌ No handle hit → deselect");
     setSelectedText(null);
     setDragMode(null);
   };
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !dragMode || !dragStart || !selectedText) {
-      return;
-    }
-    
+    if (!canvasRef.current || !dragMode || !dragStart || !selectedText) return;
+
     const rect = canvasRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     const canvasWidth = rect.width;
     const canvasHeight = rect.height;
-    
-    console.log(`🖱️ MOUSE MOVE: dragMode=${dragMode}, mouse=(${mouseX.toFixed(0)}, ${mouseY.toFixed(0)})`);
-    
-    const isTop = selectedText === 'top';
+
+    console.log(
+      `🖱️ MOUSE MOVE: mode=${dragMode}, mouse=(${mouseX.toFixed(
+        0
+      )}, ${mouseY.toFixed(0)})`
+    );
+
+    const isTop = selectedText === "top";
     const currentPos = isTop ? topTextPos : bottomTextPos;
     const currentTransform = isTop ? topTextTransform : bottomTextTransform;
     const setPos = isTop ? setTopTextPos : setBottomTextPos;
     const setTransform = isTop ? setTopTextTransform : setBottomTextTransform;
-    
-    if (dragMode === 'move') {
-      // Move text
+
+    if (dragMode === "move") {
       const deltaX = (mouseX - dragStart.x) / canvasWidth;
       const deltaY = (mouseY - dragStart.y) / canvasHeight;
       const newX = Math.max(0.1, Math.min(0.9, currentPos.x + deltaX));
       const newY = Math.max(0.05, Math.min(0.95, currentPos.y + deltaY));
       setPos({ x: newX, y: newY });
       setDragStart({ ...dragStart, x: mouseX, y: mouseY });
-      console.log(`📍 Moved text to (${newX.toFixed(2)}, ${newY.toFixed(2)})`);
-      
-    } else if (dragMode === 'rotate') {
-      // Rotate text - calculate angle from text center to mouse
+      console.log(`📍 Move → (${newX.toFixed(2)}, ${newY.toFixed(2)})`);
+    } else if (dragMode === "rotate") {
       const textX = canvasWidth * currentPos.x;
       const textY = canvasHeight * currentPos.y;
       const angle = getAngle(textX, textY, mouseX, mouseY);
-      
-      // Apply rotation (subtract 90 to make rotation natural - handle starts at top)
       const newRotation = angle - 90;
       setTransform({ ...currentTransform, rotation: newRotation });
-      console.log(`🔄 Rotated to ${newRotation.toFixed(1)}°`);
-      
-    } else if (dragMode === 'scale') {
-      // Scale text - calculate distance ratio from start
+      console.log(`🔄 Rotate → ${newRotation.toFixed(1)}°`);
+    } else if (dragMode === "scale") {
       const textX = canvasWidth * currentPos.x;
       const textY = canvasHeight * currentPos.y;
-      
       const initialDist = getDistance(textX, textY, dragStart.x, dragStart.y);
       const currentDist = getDistance(textX, textY, mouseX, mouseY);
-      
-      console.log(`📏 Scale: initialDist=${initialDist.toFixed(1)}, currentDist=${currentDist.toFixed(1)}`);
-      
+
+      console.log(
+        `📏 Scale distances: initial=${initialDist.toFixed(
+          1
+        )}, current=${currentDist.toFixed(1)}`
+      );
+
       if (initialDist > 0 && dragStart.initialScale !== undefined) {
         const scaleFactor = currentDist / initialDist;
         const baseScale = dragStart.initialScale;
-        const newScale = Math.max(0.3, Math.min(3.0, baseScale * scaleFactor));
+        const newScale = Math.max(0.3, Math.min(3, baseScale * scaleFactor));
         setTransform({ ...currentTransform, scale: newScale });
-        console.log(`📏 Scaled to ${newScale.toFixed(2)}x (from base ${baseScale.toFixed(2)})`);
+        console.log(
+          `📏 Scale → ${newScale.toFixed(2)}x (base=${baseScale.toFixed(2)})`
+        );
       }
     }
   };
 
   const handleCanvasMouseUp = () => {
-    console.log(`🖱️ MOUSE UP - resetting drag state (was: mode=${dragMode})`);
+    console.log(`🖱️ MOUSE UP → reset drag (mode=${dragMode})`);
     setDragMode(null);
     setDragStart(null);
-    console.log('✅ Drag state reset complete');
   };
 
-  // Update cursor based on hover state
   const getCursorStyle = () => {
-    if (dragMode === 'move') return 'cursor-grabbing';
-    if (dragMode === 'rotate') return 'cursor-grab';
-    if (dragMode === 'scale') return 'cursor-nwse-resize';
-    return 'cursor-pointer';
+    if (dragMode === "move") return "cursor-grabbing";
+    if (dragMode === "rotate") return "cursor-grab";
+    if (dragMode === "scale") return "cursor-nwse-resize";
+    return "cursor-pointer";
   };
 
-  // Render meme uz canvas
   useEffect(() => {
-    if (!selectedImage || !imageLoaded || !canvasRef.current || !imageRef.current) return;
+    if (!selectedImage || !imageLoaded || !canvasRef.current || !imageRef.current)
+      return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const img = imageRef.current;
 
-    // Set canvas size
     canvas.width = 800;
     canvas.height = 800;
 
-    // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw image (centered and scaled to fit)
     const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
     const x = (canvas.width - img.width * scale) / 2;
     const y = (canvas.height - img.height * scale) / 2;
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
 
-    // Draw alignment guides (before text)
     if (topText && bottomText) {
       ctx.save();
-      ctx.strokeStyle = 'rgba(255, 0, 255, 0.8)';
+      ctx.strokeStyle = "rgba(255, 0, 255, 0.8)";
       ctx.lineWidth = 2;
       ctx.setLineDash([8, 8]);
 
-      // Horizontal center guide
       if (alignmentGuides.showHorizontalCenter) {
         const centerX = canvas.width * 0.5;
         ctx.beginPath();
@@ -458,7 +514,6 @@ export default function MemeGenerator() {
         ctx.stroke();
       }
 
-      // Vertical alignment guide
       if (alignmentGuides.showVerticalAlignment) {
         const alignX = canvas.width * topTextPos.x;
         ctx.beginPath();
@@ -467,19 +522,16 @@ export default function MemeGenerator() {
         ctx.stroke();
       }
 
-      // Symmetric spacing guides
       if (alignmentGuides.showSymmetricSpacing) {
         const topY = canvas.height * topTextPos.y;
         const bottomY = canvas.height * bottomTextPos.y;
-        
-        // Top spacing line
-        ctx.strokeStyle = 'rgba(0, 255, 0, 0.8)';
+
+        ctx.strokeStyle = "rgba(0, 255, 0, 0.8)";
         ctx.beginPath();
         ctx.moveTo(0, topY);
         ctx.lineTo(canvas.width, topY);
         ctx.stroke();
-        
-        // Bottom spacing line
+
         ctx.beginPath();
         ctx.moveTo(0, bottomY);
         ctx.lineTo(canvas.width, bottomY);
@@ -489,134 +541,128 @@ export default function MemeGenerator() {
       ctx.restore();
     }
 
-    // Function to draw text with transform and handles
     const drawTextWithTransform = (
-      text: string, 
-      position: TextPosition, 
-      transform: TextTransform, 
+      text: string,
+      position: TextPosition,
+      transform: TextTransform,
       isSelected: boolean
     ) => {
       const textX = canvas.width * position.x;
       const textY = canvas.height * position.y;
       const metrics = getTextMetrics(text, transform);
-      
+      const rad = (transform.rotation * Math.PI) / 180;
+
       ctx.save();
-      
-      // Draw bounding box and handles if selected
+      ctx.translate(textX, textY);
+      ctx.rotate(rad);
+
+      const halfWidth = metrics.width / 2;
+      const halfHeight = metrics.height / 2;
+
       if (isSelected) {
         ctx.save();
-        ctx.translate(textX, textY);
-        ctx.rotate((transform.rotation * Math.PI) / 180);
-        
-        // Bounding box
-        const halfWidth = metrics.width / 2;
-        const halfHeight = metrics.height / 2;
-        ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)'; // Blue
+        ctx.strokeStyle = "rgba(59, 130, 246, 0.8)";
         ctx.lineWidth = 2;
         ctx.setLineDash([5, 5]);
         ctx.strokeRect(-halfWidth, -halfHeight, metrics.width, metrics.height);
-        
-        // Scale handle (top-right corner) - Blue square
-        ctx.fillStyle = 'rgba(59, 130, 246, 0.9)';
-        ctx.strokeStyle = 'white';
+
+        // 🔵 SCALE handle lokālajā top-right
+        ctx.fillStyle = "rgba(59, 130, 246, 0.9)";
+        ctx.strokeStyle = "white";
         ctx.lineWidth = 3;
         ctx.setLineDash([]);
-        const handleSize = 20;
-        ctx.fillRect(halfWidth - handleSize/2, -halfHeight - handleSize/2, handleSize, handleSize);
-        ctx.strokeRect(halfWidth - handleSize/2, -halfHeight - handleSize/2, handleSize, handleSize);
-        
-        ctx.restore();
-        
-        // Rotation handle (above text) - Green circle (globālās koordinātas)
+        const handleSize = 24;
+        const scaleX = halfWidth - handleSize / 2;
+        const scaleY = -halfHeight - handleSize / 2;
+        ctx.fillRect(scaleX, scaleY, handleSize, handleSize);
+        ctx.strokeRect(scaleX, scaleY, handleSize, handleSize);
+
+        // 🟢 ROTATE handle lokālajā (0, -handleDistance)
         const handleDistance = metrics.height * 0.8;
-        ctx.fillStyle = 'rgba(34, 197, 94, 0.9)'; // Green
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 3;
+        const radius = 12;
         ctx.beginPath();
-        ctx.arc(textX, textY - handleDistance, 12, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(34, 197, 94, 0.9)";
+        ctx.strokeStyle = "white";
+        ctx.arc(0, -handleDistance, radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
-        
-        // Line connecting rotation handle to text
-        ctx.strokeStyle = 'rgba(34, 197, 94, 0.6)';
+
+        // Līnija no teksta uz handle
+        ctx.strokeStyle = "rgba(34, 197, 94, 0.6)";
         ctx.lineWidth = 2;
         ctx.setLineDash([3, 3]);
         ctx.beginPath();
-        ctx.moveTo(textX, textY - handleDistance + 12);
-        ctx.lineTo(textX, textY - metrics.height / 2);
+        ctx.moveTo(0, -handleDistance + radius);
+        ctx.lineTo(0, -halfHeight);
         ctx.stroke();
+
+        ctx.restore();
       }
-      
-      // Move to text position
-      ctx.translate(textX, textY);
-      
-      // Apply rotation
-      ctx.rotate((transform.rotation * Math.PI) / 180);
-      
-      // Apply scale
+
       const baseFontSize = 60;
       const scaledFontSize = baseFontSize * transform.scale;
-      
-      // Text styling
-      ctx.fillStyle = 'white';
-      ctx.strokeStyle = 'black';
+
+      ctx.fillStyle = "white";
+      ctx.strokeStyle = "black";
       ctx.lineWidth = 8 * transform.scale;
       ctx.font = `bold ${scaledFontSize}px "Impact", "Arial Black", sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      
-      // Draw text
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
       ctx.strokeText(text.toUpperCase(), 0, 0);
       ctx.fillText(text.toUpperCase(), 0, 0);
-      
+
       ctx.restore();
     };
 
-    // Draw top text with transform and handles
     if (topText) {
-      drawTextWithTransform(topText, topTextPos, topTextTransform, selectedText === 'top');
+      drawTextWithTransform(
+        topText,
+        topTextPos,
+        topTextTransform,
+        selectedText === "top"
+      );
     }
-
-    // Draw bottom text with transform and handles
     if (bottomText) {
-      drawTextWithTransform(bottomText, bottomTextPos, bottomTextTransform, selectedText === 'bottom');
+      drawTextWithTransform(
+        bottomText,
+        bottomTextPos,
+        bottomTextTransform,
+        selectedText === "bottom"
+      );
     }
   }, [
-    selectedImage, 
-    topText, 
-    bottomText, 
-    imageLoaded, 
-    topTextPos, 
-    bottomTextPos, 
+    selectedImage,
+    imageLoaded,
+    topText,
+    bottomText,
+    topTextPos,
+    bottomTextPos,
     topTextTransform,
     bottomTextTransform,
     selectedText,
-    alignmentGuides
+    alignmentGuides,
   ]);
 
-  // Download meme as PNG
   const handleDownload = () => {
     if (!canvasRef.current) return;
-
     const canvas = canvasRef.current;
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.download = `chalkies-meme-${Date.now()}.png`;
-    link.href = canvas.toDataURL('image/png');
+    link.href = canvas.toDataURL("image/png");
     link.click();
   };
 
-  // Share to Twitter
   const handleShare = () => {
     const text = encodeURIComponent(
       `Check out my Chalkies meme! 🎨😂 #ChalkiesNFT #NFTMeme #CryptoMemes`
     );
     const url = `https://twitter.com/intent/tweet?text=${text}`;
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-8">
-      {/* Header */}
       <div className="text-center">
         <h1 className="text-5xl md:text-6xl font-bold text-doodle-black mb-4 text-marker">
           Meme Generator 😂
@@ -628,20 +674,18 @@ export default function MemeGenerator() {
         </div>
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left: Image Selection + Text Inputs */}
         <div className="space-y-6">
-          {/* Image Selection */}
           <Card className="card-doodle bg-white">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-pastel-purple rounded-full doodle-border flex items-center justify-center">
                 <ImageIcon className="w-5 h-5 text-doodle-black" />
               </div>
-              <h3 className="text-2xl font-bold text-doodle-black">Choose Image</h3>
+              <h3 className="text-2xl font-bold text-doodle-black">
+                Choose Image
+              </h3>
             </div>
-            
-            {/* Custom Upload Button */}
+
             <div className="mb-4">
               <input
                 ref={fileInputRef}
@@ -664,8 +708,7 @@ export default function MemeGenerator() {
                 OR CHOOSE A TEMPLATE:
               </span>
             </div>
-            
-            {/* Template Grid */}
+
             <div className="grid grid-cols-3 gap-3">
               {allTemplates.map((template) => (
                 <button
@@ -687,14 +730,14 @@ export default function MemeGenerator() {
                     alt={template.name}
                     className="w-full h-full object-cover rounded-lg"
                     onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect width="200" height="200" fill="%23B8E6F5"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="16" fill="%23333"%3EMEME%3C/text%3E%3C/svg%3E';
+                      e.currentTarget.src =
+                        'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect width="200" height="200" fill="%23B8E6F5"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="16" fill="%23333"%3EMEME%3C/text%3E%3C/svg%3E';
                     }}
                   />
                 </button>
               ))}
             </div>
 
-            {/* More Templates Toggle */}
             <div className="mt-4">
               <Button
                 onClick={() => setShowMoreTemplates(!showMoreTemplates)}
@@ -716,15 +759,16 @@ export default function MemeGenerator() {
             </div>
           </Card>
 
-          {/* Text Inputs */}
           <Card className="card-doodle bg-white">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-pastel-pink rounded-full doodle-border flex items-center justify-center">
                 <Type className="w-5 h-5 text-doodle-black" />
               </div>
-              <h3 className="text-2xl font-bold text-doodle-black">Add Your Text</h3>
+              <h3 className="text-2xl font-bold text-doodle-black">
+                Add Your Text
+              </h3>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-lg font-bold text-doodle-black mb-2">
@@ -738,7 +782,7 @@ export default function MemeGenerator() {
                   maxLength={50}
                 />
               </div>
-              
+
               <div>
                 <label className="block text-lg font-bold text-doodle-black mb-2">
                   Bottom Text
@@ -752,7 +796,6 @@ export default function MemeGenerator() {
                 />
               </div>
 
-              {/* Reset Button */}
               {(topText || bottomText) && (
                 <Button
                   onClick={handleResetPositions}
@@ -767,24 +810,22 @@ export default function MemeGenerator() {
           </Card>
         </div>
 
-        {/* Right: Preview + Actions */}
         <div className="space-y-6">
-          {/* Preview */}
           <Card className="card-doodle bg-white">
             <h3 className="text-2xl font-bold text-doodle-black mb-2 text-center">
               Preview
             </h3>
             <p className="text-sm font-bold text-doodle-black opacity-60 text-center mb-4">
-              💡 Click text • Drag 🟢 to rotate • Drag 🔵 to scale • Move anywhere! ✨
+              💡 Click text • Drag 🟢 to rotate • Drag 🔵 to scale • Move
+              anywhere! ✨
             </p>
-            
-            <div 
+
+            <div
               ref={containerRef}
               className="relative aspect-square bg-sky-light rounded-lg doodle-border overflow-hidden"
             >
               {selectedImage ? (
                 <>
-                  {/* Hidden image for loading */}
                   <img
                     ref={imageRef}
                     src={selectedImage}
@@ -793,11 +834,13 @@ export default function MemeGenerator() {
                     onLoad={() => setImageLoaded(true)}
                     crossOrigin="anonymous"
                   />
-                  
-                  {/* Canvas for meme */}
+
                   <canvas
                     ref={canvasRef}
-                    className={cn("w-full h-full object-contain", getCursorStyle())}
+                    className={cn(
+                      "w-full h-full object-contain",
+                      getCursorStyle()
+                    )}
                     onMouseDown={handleCanvasMouseDown}
                     onMouseMove={handleCanvasMouseMove}
                     onMouseUp={handleCanvasMouseUp}
@@ -814,8 +857,9 @@ export default function MemeGenerator() {
               )}
             </div>
 
-            {/* Alignment Status */}
-            {(alignmentGuides.showHorizontalCenter || alignmentGuides.showVerticalAlignment || alignmentGuides.showSymmetricSpacing) && (
+            {(alignmentGuides.showHorizontalCenter ||
+              alignmentGuides.showVerticalAlignment ||
+              alignmentGuides.showSymmetricSpacing) && (
               <div className="mt-4 p-3 bg-pastel-purple-light rounded-lg doodle-border">
                 <p className="text-sm font-bold text-doodle-black text-center">
                   ✨ Perfect Alignment Detected! ✨
@@ -824,7 +868,6 @@ export default function MemeGenerator() {
             )}
           </Card>
 
-          {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-4">
             <Button
               onClick={handleDownload}
@@ -834,7 +877,7 @@ export default function MemeGenerator() {
               <Download className="mr-2 w-5 h-5" />
               Download
             </Button>
-            
+
             <Button
               onClick={handleShare}
               disabled={!selectedImage}
@@ -845,9 +888,10 @@ export default function MemeGenerator() {
             </Button>
           </div>
 
-          {/* Tips */}
           <Card className="card-doodle bg-pastel-yellow-light">
-            <h4 className="text-lg font-bold text-doodle-black mb-2">💡 Canvas Master Tips:</h4>
+            <h4 className="text-lg font-bold text-doodle-black mb-2">
+              💡 Canvas Master Tips:
+            </h4>
             <ul className="text-sm font-semibold text-doodle-black space-y-1">
               <li>• 🟢 Drag GREEN circle to rotate text! 🔄</li>
               <li>• 🔵 Drag BLUE square to scale text! 📏</li>
