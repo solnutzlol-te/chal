@@ -150,7 +150,6 @@ export default function Index() {
               <a href="https://x.com/ChalkiesMON" target="_blank" rel="noopener noreferrer">
               <Button 
                 size="lg" 
-                variant="outline" 
                 className="btn-doodle bg-pastel-yellow hover:bg-pastel-yellow text-doodle-black text-2xl"
               >
                 <Heart className="mr-2" /> Follow on X
