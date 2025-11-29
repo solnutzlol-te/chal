@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,27 +14,14 @@ import {
   Users, 
   Zap, 
   Heart,
-  Star,
-  Activity
+  Star
 } from "lucide-react";
 import Navbar from "@/components/navbar";
 
 export default function Index() {
-  const maxMint = 10;
   const totalSupply = 10000;
+  const mintedCount = 3742; // Statisks skaitlis
   const price = 0; // Free mint
-
-  const incrementQuantity = () => {
-    if (mintQuantity < maxMint) {
-      setMintQuantity(mintQuantity + 1);
-    }
-  };
-
-  const decrementQuantity = () => {
-    if (mintQuantity > 1) {
-      setMintQuantity(mintQuantity - 1);
-    }
-  };
 
   // Sample NFT data
   // INSTRUKCIJA: Ielieciet savus NFT attēlus mapē public/ ar nosaukumiem:
@@ -186,28 +174,10 @@ export default function Index() {
                 <div className="text-lg text-doodle-black font-semibold">Total Supply</div>
               </div>
               
-              {/* LIVE Minted Counter from Blockchain */}
-              <div className="bg-white doodle-border doodle-shadow-sm px-8 py-4 transform -rotate-1 hover:rotate-0 transition-transform relative">
-                <div className="text-3xl font-bold text-doodle-black flex items-center justify-center gap-2">
-                  {isLoading ? (
-                    <span className="animate-pulse">...</span>
-                  ) : (
-                    <>
-                      {mintedCount.toLocaleString()}
-                      {isLive && (
-                        <Activity className="w-5 h-5 text-pastel-green animate-pulse" />
-                      )}
-                    </>
-                  )}
-                </div>
-                <div className="text-lg text-doodle-black font-semibold flex items-center justify-center gap-1">
-                  Minted
-                  {isLive && (
-                    <span className="text-xs bg-pastel-green px-2 py-0.5 rounded-full doodle-border ml-1">
-                      LIVE
-                    </span>
-                  )}
-                </div>
+              {/* Minted Counter */}
+              <div className="bg-white doodle-border doodle-shadow-sm px-8 py-4 transform -rotate-1 hover:rotate-0 transition-transform">
+                <div className="text-3xl font-bold text-doodle-black">{mintedCount.toLocaleString()}</div>
+                <div className="text-lg text-doodle-black font-semibold">Minted</div>
               </div>
 
               <div className="bg-white doodle-border doodle-shadow-sm px-8 py-4 transform rotate-1 hover:rotate-0 transition-transform">
@@ -426,4 +396,3 @@ export default function Index() {
     </div>
   );
 }
-
