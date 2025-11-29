@@ -18,7 +18,7 @@ export default function Navbar() {
     {
       label: "Home",
       icon: Home,
-      action: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+      action: () => window.location.href = '/',
       color: "bg-pastel-pink",
       hoverColor: "hover:bg-pastel-pink-dark",
     },
