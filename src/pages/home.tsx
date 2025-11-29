@@ -1,10 +1,3 @@
-/**
- * NFT Mājaslapas Galvenā Komponente
- * 
- * Šī ir galvenā NFT minting mājaslapa ar krītiņu/doodle stilu.
- * Ietver: Hero, Mint, Gallery, Roadmap, FAQ sekcijas.
- */
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -47,11 +40,11 @@ export default function Index() {
   };
 
   const nftGallery = [
-    { id: 1, name: "Flame Chalky #1", image: "nft-1.png", rarity: "Legendary" },
-    { id: 2, name: "Silly Chalky #2", image: "nft-5.png", rarity: "Legendary" },
+    { id: 1, name: "Flame Chalky", image: "nft-1.png", rarity: "Legendary" },
+    { id: 2, name: "Silly Chalky", image: "nft-5.png", rarity: "Legendary" },
     { id: 3, name: "Positive Chalky", image: "/nft-3.png", rarity: "Common" },
-    { id: 4, name: "Sad Chalky #4", image: "/nft-4.png", rarity: "Common" },
-    { id: 5, name: "Friendly Chalky #5", image: "/nft-2.png", rarity: "Epic" },
+    { id: 4, name: "Sad Chalky", image: "/nft-4.png", rarity: "Common" },
+    { id: 5, name: "Friendly Chalky", image: "/nft-2.png", rarity: "Epic" },
     { id: 6, name: "Cowboy Chalky", image: "/nft-6.png", rarity: "Rare" },
   ];
 
@@ -180,14 +173,16 @@ export default function Index() {
                 onClick={() => document.getElementById('mint-section')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <Sparkles className="mr-2" /> Mint Now
+                <a href="https://twitter.com/ChalkiesMON" target="_blank" rel="noopener noreferrer">
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="btn-doodle bg-white hover:bg-pastel-yellow text-doodle-black text-2xl"
               >
-                <Heart className="mr-2" /> Join Discord
+                <Heart className="mr-2" /> Follow on X
               </Button>
+              </a>
             </div>
 
             {/* Stats */}
