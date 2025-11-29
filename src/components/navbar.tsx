@@ -25,16 +25,9 @@ export default function Navbar() {
     {
       label: "Stake",
       icon: Sparkles,
-      action: () => scrollToSection('mint-section'),
+      action: () => scrollToSection(''),
       color: "bg-pastel-purple",
       hoverColor: "hover:bg-pastel-purple-dark",
-    },
-    {
-      label: "Collection",
-      icon: Sparkles,
-      action: () => scrollToSection('gallery-section'),
-      color: "bg-pastel-yellow",
-      hoverColor: "hover:bg-pastel-yellow-dark",
     },
   ];
 
