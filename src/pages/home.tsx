@@ -95,7 +95,7 @@ export default function Index() {
       <Navbar />
 
       {/* Hero Section */}
-      <section id="home-section" className="relative pt-62 pb-20 px-4">
+      <section id="home-section" className="relative pt-26 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <div className="inline-block animate-bounce-slow mb-6">
