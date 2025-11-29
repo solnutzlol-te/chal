@@ -19,7 +19,6 @@ import {
 import Navbar from "@/components/navbar";
 
 export default function Index() {
-  const [mintQuantity, setMintQuantity] = useState(1);
   const maxMint = 10;
   const totalSupply = 10000;
   const price = 0; // Free mint
