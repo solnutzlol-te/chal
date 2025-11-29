@@ -47,8 +47,8 @@ export default function Index() {
   };
 
   const nftGallery = [
-    { id: 1, name: "Happy Chalky #1", image: "/nft-1.png", rarity: "Common" },
-    { id: 2, name: "Cool Chalky #2", image: "/nft-2.png", rarity: "Rare" },
+    { id: 1, name: "Happy Chalky #1", image: "nft-1.png", rarity: "Common" },
+    { id: 2, name: "Cool Chalky #2", image: "nft-2.png", rarity: "Rare" },
     { id: 3, name: "Chill Chalky #3", image: "/nft-3.png", rarity: "Common" },
     { id: 4, name: "Wavy Chalky #4", image: "/nft-4.png", rarity: "Rare" },
     { id: 5, name: "Silly Chalky #5", image: "/nft-5.png", rarity: "Epic" },
