@@ -23,9 +23,6 @@ export default function Index() {
   const mintedCount = 76; // Statisks skaitlis
   const price = 0; // Free mint
 
-  // Sample NFT data
-  // INSTRUKCIJA: Ielieciet savus NFT attēlus mapē public/ ar nosaukumiem:
-  // nft-1.png, nft-2.png, nft-3.png, nft-4.png, nft-5.png, nft-6.png
   const nftGallery = [
     { id: 1, name: "Flame Chalky", image: "nft-1.png", rarity: "Legendary" },
     { id: 2, name: "Silly Chalky", image: "nft-5.png", rarity: "Legendary" },
@@ -95,13 +92,11 @@ export default function Index() {
       <Navbar />
 
       {/* Hero Section */}
-      <section id="home-section" className="relative pt-42 pb-20 px-4">
+      <section id="home-section" className="relative pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <div className="inline-block animate-bounce-slow mb-6">
               <div className="relative">
-                {/* INSTRUKCIJA: Ielieciet savu NFT attēlu mapē public/ ar nosaukumu hero-nft.png */}
-                {/* Ieteicamais izmērs: 400x400px vai lielāks, PNG ar transparent background */}
                 <div className="w-64 h-64 mx-auto doodle-border-thick doodle-shadow relative bg-sky-light overflow-hidden rounded-lg">
                   <img 
                     src="/hero-nft.png" 
