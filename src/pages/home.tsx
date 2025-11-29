@@ -24,7 +24,7 @@ export default function Index() {
   const [mintQuantity, setMintQuantity] = useState(1);
   const maxMint = 10;
   const totalSupply = 1999;
-  const minted = 75;
+  const minted = 76;
   const price = 0; // Free mint
 
   const incrementQuantity = () => {
