@@ -41,7 +41,7 @@ const defaultTemplates = [
 
 // Additional 20 popular templates (hidden by default)
 const moreTemplates = [
-  { id: 7, src: "https://i.imgflip.com/5c7lwq.jpg", name: "Trade Offer" },
+  { id: 7, src: "https://en.meming.world/images/en/thumb/1/17/Trade_Offer.jpg/459px-Trade_Offer.jpg", name: "Trade Offer" },
   { id: 8, src: "https://i.imgflip.com/2fm6x.jpg", name: "Mocking SpongeBob" },
   { id: 9, src: "https://i.imgflip.com/1otk96.jpg", name: "Trump Signing" },
   { id: 10, src: "https://i.imgflip.com/3lmzyx.jpg", name: "Bernie I Am Once Again" },
@@ -551,7 +551,8 @@ export default function MemeGenerator() {
   // Share to Twitter
   const handleShare = () => {
     const text = encodeURIComponent(
-      `Check out my Chalkies meme! 🎨😂 #ChalkiesNFT #NFTMeme #CryptoMemes`
+      `Check out my Chalkies meme! 🎨😂
+      #ChalkiesNFT #NFTMeme #CryptoMemes`
     );
     const url = `https://twitter.com/intent/tweet?text=${text}`;
     window.open(url, '_blank');
@@ -566,7 +567,7 @@ export default function MemeGenerator() {
         </h1>
         <div className="inline-block bg-white doodle-border-thick doodle-shadow px-6 py-3 transform -rotate-1">
           <p className="text-xl font-bold text-doodle-black">
-            Create hilarious memes • Direct Canvas Controls • 26+ Templates 🎨
+            Create hilarious memes • Direct Canvas Controls • Custom Templates 🎨
           </p>
         </div>
       </div>
