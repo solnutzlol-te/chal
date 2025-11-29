@@ -135,20 +135,34 @@ export default function Index() {
       <section className="relative pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <div className="inline-block animate-bounce-slow mb-6">
+                      <div className="inline-block animate-bounce-slow mb-6">
               <div className="relative">
-                {/* Main character blob */}
-                <div className="w-48 h-48 mx-auto bg-pastel-purple doodle-border-thick doodle-shadow relative">
-                  <div className="absolute top-1/3 left-1/4 w-12 h-12 bg-white rounded-full border-4 border-doodle-black">
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-doodle-black rounded-full" />
-                  </div>
-                  <div className="absolute top-1/3 right-1/4 w-12 h-12 bg-white rounded-full border-4 border-doodle-black">
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-doodle-black rounded-full" />
-                  </div>
-                  <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 w-8 h-2 bg-doodle-black rounded-full" />
-                  {/* Antenna */}
-                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-doodle-black" />
-                  <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-pastel-pink rounded-full border-3 border-doodle-black" />
+                <div className="w-64 h-64 mx-auto doodle-border-thick doodle-shadow relative bg-sky-light overflow-hidden rounded-lg">
+                  <img 
+                    src="/hero-nft.png" 
+                    alt="Chalkies Hero NFT"
+                    className="w-full h-full object-contain p-4"
+                    onError={(e) => {
+                      // Fallback: ja attēls nav atrasts, parāda SVG placeholder
+                      e.currentTarget.style.display = 'none';
+                      const parent = e.currentTarget.parentElement;
+                      if (parent && !parent.querySelector('.fallback-character')) {
+                        parent.innerHTML = `
+                          <div class="fallback-character absolute inset-0 bg-pastel-purple">
+                            <div class="absolute top-1/3 left-1/4 w-12 h-12 bg-white rounded-full border-4 border-doodle-black">
+                              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-doodle-black rounded-full"></div>
+                            </div>
+                            <div class="absolute top-1/3 right-1/4 w-12 h-12 bg-white rounded-full border-4 border-doodle-black">
+                              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-doodle-black rounded-full"></div>
+                            </div>
+                            <div class="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 w-8 h-2 bg-doodle-black rounded-full"></div>
+                            <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-doodle-black"></div>
+                            <div class="absolute -top-12 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-pastel-pink rounded-full border-3 border-doodle-black"></div>
+                          </div>
+                        `;
+                      }
+                    }}
+                  />
                 </div>
               </div>
             </div>
