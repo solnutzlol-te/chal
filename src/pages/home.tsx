@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { 
   Accordion,
   AccordionContent,
@@ -15,9 +14,7 @@ import {
   Zap, 
   Heart,
   Star,
-  Cloud,
-  Plus,
-  Minus
+  Activity
 } from "lucide-react";
 import { useNFTStats } from "@/hooks/use-nft-stats";
 import Navbar from "@/components/navbar";
@@ -25,9 +22,11 @@ import Navbar from "@/components/navbar";
 export default function Index() {
   const [mintQuantity, setMintQuantity] = useState(1);
   const maxMint = 10;
-  const totalSupply = 1999;
-  const minted = 76;
+  const totalSupply = 10000;
   const price = 0; // Free mint
+
+  // Fetch reāllaika minted skaitu no blockchain
+  const { mintedCount, isLoading, isLive } = useNFTStats();
 
   const incrementQuantity = () => {
     if (mintQuantity < maxMint) {
@@ -41,6 +40,9 @@ export default function Index() {
     }
   };
 
+  // Sample NFT data
+  // INSTRUKCIJA: Ielieciet savus NFT attēlus mapē public/ ar nosaukumiem:
+  // nft-1.png, nft-2.png, nft-3.png, nft-4.png, nft-5.png, nft-6.png
   const nftGallery = [
     { id: 1, name: "Flame Chalky", image: "nft-1.png", rarity: "Legendary" },
     { id: 2, name: "Silly Chalky", image: "nft-5.png", rarity: "Legendary" },
@@ -54,7 +56,7 @@ export default function Index() {
     {
       phase: "Phase 1",
       title: "Launch & Mint",
-      description: "FREE mint for everyone!",
+      description: "100% FREE mint for everyone!",
       icon: Rocket,
       status: "current",
     },
@@ -88,11 +90,11 @@ export default function Index() {
     },
     {
       question: "How many can I mint?",
-      answer: "There is no limit.",
+      answer: "You can mint up to 10 NFTs per wallet in one transaction.",
     },
     {
       question: "What blockchain is this on?",
-      answer: "Our NFTs are minted on Monad blockchain.",
+      answer: "Our NFTs are minted on Ethereum mainnet for maximum security and compatibility.",
     },
     {
       question: "What utility do these NFTs have?",
@@ -106,14 +108,22 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-sky overflow-hidden">
+      {/* Navigācijas Bārs */}
       <Navbar />
-      <br><br><br>
+
+      {/* Decorative clouds - positioned to be fully visible with navbar spacing */}
+      <div className="fixed top-32 left-12 w-32 h-16 cloud-shape opacity-80 animate-float z-0" style={{ animationDelay: '0s' }} />
+      <div className="fixed top-28 right-20 w-40 h-20 cloud-shape opacity-70 animate-float z-0" style={{ animationDelay: '1s' }} />
+      <div className="fixed top-56 left-[35%] w-28 h-14 cloud-shape opacity-60 animate-float z-0" style={{ animationDelay: '2s' }} />
+
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4">
+      <section id="home-section" className="relative pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-                      <div className="inline-block animate-bounce-slow mb-6">
+            <div className="inline-block animate-bounce-slow mb-6">
               <div className="relative">
+                {/* INSTRUKCIJA: Ielieciet savu NFT attēlu mapē public/ ar nosaukumu hero-nft.png */}
+                {/* Ieteicamais izmērs: 400x400px vai lielāks, PNG ar transparent background */}
                 <div className="w-64 h-64 mx-auto doodle-border-thick doodle-shadow relative bg-sky-light overflow-hidden rounded-lg">
                   <img 
                     src="/hero-nft.png" 
@@ -165,29 +175,50 @@ export default function Index() {
               >
                 <Sparkles className="mr-2" /> Mint Now
               </Button>
-              <a href="https://twitter.com/ChalkiesMON" target="_blank" rel="noopener noreferrer">
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="btn-doodle bg-white hover:bg-pastel-yellow text-doodle-black text-2xl"
               >
-                <Heart className="mr-2" /> Follow on X
+                <Heart className="mr-2" /> Join Discord
               </Button>
-              </a>
             </div>
 
-            {/* Stats */}
+            {/* Stats - Now with LIVE blockchain data! */}
             <div className="flex flex-wrap justify-center gap-6 text-center">
-              {[
-                { label: "Total Supply", value: totalSupply.toLocaleString() },
-                { label: "Minted", value: minted.toLocaleString() },
-                { label: "Price", value: "FREE" },
-              ].map((stat, i) => (
-                <div key={i} className="bg-white doodle-border doodle-shadow-sm px-8 py-4 transform rotate-1 hover:rotate-0 transition-transform">
-                  <div className="text-3xl font-bold text-doodle-black">{stat.value}</div>
-                  <div className="text-lg text-doodle-black font-semibold">{stat.label}</div>
+              <div className="bg-white doodle-border doodle-shadow-sm px-8 py-4 transform rotate-1 hover:rotate-0 transition-transform">
+                <div className="text-3xl font-bold text-doodle-black">{totalSupply.toLocaleString()}</div>
+                <div className="text-lg text-doodle-black font-semibold">Total Supply</div>
+              </div>
+              
+              {/* LIVE Minted Counter from Blockchain */}
+              <div className="bg-white doodle-border doodle-shadow-sm px-8 py-4 transform -rotate-1 hover:rotate-0 transition-transform relative">
+                <div className="text-3xl font-bold text-doodle-black flex items-center justify-center gap-2">
+                  {isLoading ? (
+                    <span className="animate-pulse">...</span>
+                  ) : (
+                    <>
+                      {mintedCount.toLocaleString()}
+                      {isLive && (
+                        <Activity className="w-5 h-5 text-pastel-green animate-pulse" />
+                      )}
+                    </>
+                  )}
                 </div>
-              ))}
+                <div className="text-lg text-doodle-black font-semibold flex items-center justify-center gap-1">
+                  Minted
+                  {isLive && (
+                    <span className="text-xs bg-pastel-green px-2 py-0.5 rounded-full doodle-border ml-1">
+                      LIVE
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-white doodle-border doodle-shadow-sm px-8 py-4 transform rotate-1 hover:rotate-0 transition-transform">
+                <div className="text-3xl font-bold text-doodle-black">FREE</div>
+                <div className="text-lg text-doodle-black font-semibold">Price</div>
+              </div>
             </div>
           </div>
         </div>
@@ -243,7 +274,7 @@ export default function Index() {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-20 px-4">
+      <section id="gallery-section" className="py-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-5xl md:text-6xl font-bold text-center text-doodle-black mb-4 text-marker">
             Meet the Chalkies!
@@ -252,7 +283,7 @@ export default function Index() {
             Each one is unique and adorable! 🎨
           </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {nftGallery.map((nft) => (
               <Card 
                 key={nft.id} 
@@ -397,5 +428,7 @@ export default function Index() {
           </p>
         </div>
       </footer>
+    </div>
   );
 }
+
