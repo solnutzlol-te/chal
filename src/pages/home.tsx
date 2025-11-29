@@ -397,6 +397,5 @@ export default function Index() {
           </p>
         </div>
       </footer>
-    </div>
   );
 }
