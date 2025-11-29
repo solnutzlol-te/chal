@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&family=Permanent+Marker&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 200 70% 85%;
+    --foreground: 0 0% 10%;
+
+    --muted: 200 60% 75%;
+    --muted-foreground: 0 0% 30%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --border: 0 0% 10%;
+    --input: 0 0% 90%;
+
+    --primary: 280 60% 85%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 350 100% 85%;
+    --secondary-foreground: 0 0% 10%;
+
+    --accent: 55 100% 85%;
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 0 0% 10%;
+
+    --radius: 1rem;
+
+    --chart-1: 350 100% 85%;
+    --chart-2: 120 50% 85%;
+    --chart-3: 55 100% 85%;
+    --chart-4: 280 60% 85%;
+    --chart-5: 25 100% 85%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 280 60% 85%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 200 70% 85%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 10%;
+    --sidebar-ring: 280 60% 85%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-doodle-black;
+  }
+  
+  body {
+    @apply bg-sky text-doodle-black font-handwritten;
+    font-weight: 400;
+  }
+}
+
+/* Doodle/Crayon Style Utilities */
+@layer utilities {
+  /* Thick crayon outlines */
+  .doodle-border {
+    border: 3px solid hsl(0, 0%, 10%);
+    border-radius: 20px;
+    position: relative;
+  }
+  
+  .doodle-border-thick {
+    border: 4px solid hsl(0, 0%, 10%);
+    border-radius: 25px;
+  }
+  
+  /* Hand-drawn wavy border effect */
+  .doodle-wavy {
+    position: relative;
+    border: 3px solid hsl(0, 0%, 10%);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  }
+  
+  /* Rough texture shadow */
+  .doodle-shadow {
+    box-shadow: 
+      5px 5px 0px hsl(0, 0%, 20%),
+      -1px -1px 0px hsl(0, 0%, 30%);
+  }
+  
+  .doodle-shadow-sm {
+    box-shadow: 3px 3px 0px hsl(0, 0%, 20%);
+  }
+  
+  /* Grass texture for bottom sections */
+  .grass-pattern {
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        hsl(120, 50%, 75%) 2px,
+        hsl(120, 50%, 75%) 4px
+      );
+  }
+  
+  /* Cloud shapes */
+  .cloud-shape {
+    border-radius: 100px;
+    position: relative;
+    background: white;
+    border: 3px solid hsl(0, 0%, 10%);
+  }
+  
+  .cloud-shape::before,
+  .cloud-shape::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border: 3px solid hsl(0, 0%, 10%);
+    border-radius: 100px;
+  }
+  
+  .cloud-shape::before {
+    width: 50px;
+    height: 50px;
+    top: -25px;
+    left: 10px;
+  }
+  
+  .cloud-shape::after {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    right: 10px;
+  }
+}
+
+/* Handwritten text effect */
+@layer components {
+  .text-handwritten {
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+    letter-spacing: 0.03em;
+  }
+  
+  .text-marker {
+    font-family: 'Permanent Marker', cursive;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+  
+  /* Doodle button */
+  .btn-doodle {
+    @apply px-8 py-4 text-xl font-bold;
+    @apply doodle-border-thick doodle-shadow;
+    @apply transition-all duration-200;
+    @apply hover:translate-x-1 hover:translate-y-1;
+    @apply hover:shadow-none;
+    @apply active:translate-x-2 active:translate-y-2;
+    font-family: 'Comic Neue', cursive;
+    font-weight: 700;
+  }
+  
+  /* Doodle card */
+  .card-doodle {
+    @apply doodle-border doodle-shadow bg-white p-6;
+    @apply transition-all duration-300;
+    @apply hover:-translate-y-2;
+  }
+  
+  /* Bunting/Flag decoration */
+  .bunting-flag {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-top: 40px solid currentColor;
+    border: 3px solid hsl(0, 0%, 10%);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(200, 70%, 85%);
+  border: 2px solid hsl(0, 0%, 10%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(280, 60%, 85%);
+  border: 2px solid hsl(0, 0%, 10%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(280, 60%, 75%);
+}
+
+/* Doodle selection */
+::selection {
+  background: hsl(55, 100%, 85%);
+  color: hsl(0, 0%, 10%);
+}
+
+/* Animated background grass strokes */
+@keyframes grass-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.grass-stroke {
+  animation: grass-sway 3s ease-in-out infinite;
+}
