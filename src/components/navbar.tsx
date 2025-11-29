@@ -22,6 +22,13 @@ export default function Navbar() {
       color: "bg-pastel-pink",
       hoverColor: "hover:bg-pastel-pink-dark",
     },
+        {
+      label: "Memes",
+      icon: Sparkles,
+      action: () => window.location.href = '/meme-generator',
+      color: "bg-pastel-purple",
+      hoverColor: "hover:bg-pastel-purple-dark",
+    },
     {
       label: "Stake",
       icon: Sparkles,
