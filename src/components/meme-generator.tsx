@@ -1,7 +1,9 @@
 /**
- * Chalkies Meme Generator Component - V6.4
- * 
- * FIX: Scale handle strādā (lokālās koordinātas + rotācija).
+ * Chalkies Meme Generator Component - V6.5
+ *
+ * FIX:
+ * - Peles koordinātas pārveidotas uz CANVAS koordinātēm (ņem vērā CSS scale)
+ * - Scale handle hitbox palielināts un precīzi sakrīt ar zilo kvadrātu
  */
 
 import { useState, useRef, useEffect } from "react";
@@ -251,9 +253,7 @@ export default function MemeGenerator() {
     (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
 
   /**
-   * ✅ NEW: hit detection lokālajās koordinātēs
-   * 1) pārvēršam peles pozīciju uz teksta lokālo sistēmu
-   * 2) pārbaudām rotate, scale un body hit’us
+   * Hit detection lokālajās koordinātēs (canvas-space, nevis CSS-space)
    */
   const checkHandleHit = (
     mouseX: number,
@@ -271,10 +271,10 @@ export default function MemeGenerator() {
     const halfWidth = metrics.width / 2;
     const halfHeight = metrics.height / 2;
     const handleDistance = metrics.height * 0.8;
-    const rotateHandleRadius = 20;
-    const scaleHandleSize = 24; // nedaudz lielāks, vieglāk trāpīt
+    const rotateHandleRadius = 24;
+    const scaleHandleSize = 32; // lielāks hitbox
 
-    // Global -> local (rotējam atpakaļ par -rotation)
+    // Global -> local
     const rad = (transform.rotation * Math.PI) / 180;
     const cos = Math.cos(-rad);
     const sin = Math.sin(-rad);
@@ -286,38 +286,25 @@ export default function MemeGenerator() {
     const localY = dx * sin + dy * cos;
 
     console.log(
-      `👀 Local coords: (${localX.toFixed(1)}, ${localY.toFixed(1)}) rotation=${transform.rotation.toFixed(
+      `👀 Local coords: (${localX.toFixed(1)}, ${localY.toFixed(
         1
-      )}`
+      )}) rotation=${transform.rotation.toFixed(1)}`
     );
 
-    // 🟢 ROTATE handle: aplis ap (0, -handleDistance)
+    // 🟢 ROTATE handle
     const distToRotate = getDistance(localX, localY, 0, -handleDistance);
-    console.log(
-      `🟢 Rotate check: dist=${distToRotate.toFixed(
-        1
-      )}, need < ${rotateHandleRadius}`
-    );
     if (distToRotate < rotateHandleRadius) {
       console.log("✅ HIT ROTATE HANDLE (local)!");
       return { type: "rotate" };
     }
 
-    // 🔵 SCALE handle: kvadrāts ap (halfWidth, -halfHeight)
+    // 🔵 SCALE handle (kvadrāts ap top-right)
     const scaleCenterX = halfWidth;
     const scaleCenterY = -halfHeight;
     const withinScaleX =
       Math.abs(localX - scaleCenterX) < scaleHandleSize / 2;
     const withinScaleY =
       Math.abs(localY - scaleCenterY) < scaleHandleSize / 2;
-
-    console.log(
-      `🔵 Scale check: local=(${localX.toFixed(1)}, ${localY.toFixed(
-        1
-      )}) vs center=(${scaleCenterX.toFixed(1)}, ${scaleCenterY.toFixed(
-        1
-      )})`
-    );
 
     if (withinScaleX && withinScaleY) {
       console.log("✅ HIT SCALE HANDLE (local)!");
@@ -335,17 +322,33 @@ export default function MemeGenerator() {
     return { type: null };
   };
 
-  const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current) return;
+  /**
+   * Helper: konvertē peles event uz canvas koordinātēm (ņem vērā CSS scale)
+   */
+  const getMouseInCanvasSpace = (
+    e: React.MouseEvent<HTMLCanvasElement>,
+    canvas: HTMLCanvasElement
+  ) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+    return { x, y };
+  };
 
-    const rect = canvasRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const canvasWidth = rect.width;
-    const canvasHeight = rect.height;
+  const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const { x: mouseX, y: mouseY } = getMouseInCanvasSpace(e, canvas);
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
 
     console.log(
-      `\n🖱️ MOUSE DOWN at (${mouseX.toFixed(0)}, ${mouseY.toFixed(0)})`
+      `\n🖱️ MOUSE DOWN (canvas-space) at (${mouseX.toFixed(
+        0
+      )}, ${mouseY.toFixed(0)})`
     );
 
     if (topText) {
@@ -408,16 +411,15 @@ export default function MemeGenerator() {
   };
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !dragMode || !dragStart || !selectedText) return;
+    const canvas = canvasRef.current;
+    if (!canvas || !dragMode || !dragStart || !selectedText) return;
 
-    const rect = canvasRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const canvasWidth = rect.width;
-    const canvasHeight = rect.height;
+    const { x: mouseX, y: mouseY } = getMouseInCanvasSpace(e, canvas);
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
 
     console.log(
-      `🖱️ MOUSE MOVE: mode=${dragMode}, mouse=(${mouseX.toFixed(
+      `🖱️ MOUSE MOVE (canvas-space): mode=${dragMode}, mouse=(${mouseX.toFixed(
         0
       )}, ${mouseY.toFixed(0)})`
     );
@@ -566,18 +568,18 @@ export default function MemeGenerator() {
         ctx.setLineDash([5, 5]);
         ctx.strokeRect(-halfWidth, -halfHeight, metrics.width, metrics.height);
 
-        // 🔵 SCALE handle lokālajā top-right
+        // 🔵 SCALE handle (lokālais top-right)
         ctx.fillStyle = "rgba(59, 130, 246, 0.9)";
         ctx.strokeStyle = "white";
         ctx.lineWidth = 3;
         ctx.setLineDash([]);
-        const handleSize = 24;
+        const handleSize = 32;
         const scaleX = halfWidth - handleSize / 2;
         const scaleY = -halfHeight - handleSize / 2;
         ctx.fillRect(scaleX, scaleY, handleSize, handleSize);
         ctx.strokeRect(scaleX, scaleY, handleSize, handleSize);
 
-        // 🟢 ROTATE handle lokālajā (0, -handleDistance)
+        // 🟢 ROTATE handle (lokāls 0, -handleDistance)
         const handleDistance = metrics.height * 0.8;
         const radius = 12;
         ctx.beginPath();
@@ -669,7 +671,7 @@ export default function MemeGenerator() {
         </h1>
         <div className="inline-block bg-white doodle-border-thick doodle-shadow px-6 py-3 transform -rotate-1">
           <p className="text-xl font-bold text-doodle-black">
-            Create hilarious memes • Direct Canvas Controls • 26+ Templates 🎨
+            Create hilarious memes • Direct Canvas Controls • Custom Templates 🎨
           </p>
         </div>
       </div>
@@ -896,8 +898,7 @@ export default function MemeGenerator() {
               <li>• 🟢 Drag GREEN circle to rotate text! 🔄</li>
               <li>• 🔵 Drag BLUE square to scale text! 📏</li>
               <li>• 👆 Click text body to move anywhere! 🖱️</li>
-              <li>• ✨ Watch for alignment guides (pink/green)! 🎯</li>
-              <li>• 🖼️ 26+ templates + upload your own!</li>
+              <li>• 🖼️ 20+ templates + upload your own!</li>
               <li>• 🐦 Share on Twitter with #ChalkiesNFT!</li>
             </ul>
           </Card>
