@@ -73,11 +73,11 @@ export default function Index() {
     },
     {
       question: "How many can I mint?",
-      answer: "You can mint up to 10 NFTs per wallet in one transaction.",
+      answer: "Unlimited.",
     },
     {
       question: "What blockchain is this on?",
-      answer: "Our NFTs are minted on Ethereum mainnet for maximum security and compatibility.",
+      answer: "Our NFTs are minted on Monad Mainnet.",
     },
     {
       question: "What utility do these NFTs have?",
@@ -95,7 +95,7 @@ export default function Index() {
       <Navbar />
 
       {/* Decorative clouds - positioned to be fully visible with navbar spacing */}
-      <div className="fixed top-32 left-12 w-32 h-16 cloud-shape opacity-80 animate-float z-0" style={{ animationDelay: '0s' }} />
+      <div className="fixed top-84 left-12 w-32 h-16 cloud-shape opacity-80 animate-float z-0" style={{ animationDelay: '0s' }} />
       <div className="fixed top-28 right-20 w-40 h-20 cloud-shape opacity-70 animate-float z-0" style={{ animationDelay: '1s' }} />
       <div className="fixed top-56 left-[35%] w-28 h-14 cloud-shape opacity-60 animate-float z-0" style={{ animationDelay: '2s' }} />
 
