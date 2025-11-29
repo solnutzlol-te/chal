@@ -173,8 +173,8 @@ export default function Index() {
                 onClick={() => document.getElementById('mint-section')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <Sparkles className="mr-2" /> Mint Now
-                <a href="https://twitter.com/ChalkiesMON" target="_blank" rel="noopener noreferrer">
               </Button>
+              <a href="https://twitter.com/ChalkiesMON" target="_blank" rel="noopener noreferrer">
               <Button 
                 size="lg" 
                 variant="outline" 
