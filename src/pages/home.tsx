@@ -46,14 +46,13 @@ export default function Index() {
     }
   };
 
-  // Sample NFT data
   const nftGallery = [
-    { id: 1, name: "Happy Chalky #1", color: "pastel-purple", rarity: "Common" },
-    { id: 2, name: "Cool Chalky #2", color: "pastel-pink", rarity: "Rare" },
-    { id: 3, name: "Chill Chalky #3", color: "pastel-green", rarity: "Common" },
-    { id: 4, name: "Wavy Chalky #4", color: "pastel-yellow", rarity: "Rare" },
-    { id: 5, name: "Silly Chalky #5", color: "pastel-orange", rarity: "Epic" },
-    { id: 6, name: "Jolly Chalky #6", color: "pastel-purple", rarity: "Common" },
+    { id: 1, name: "Happy Chalky #1", image: "/nft-1.png", rarity: "Common" },
+    { id: 2, name: "Cool Chalky #2", image: "/nft-2.png", rarity: "Rare" },
+    { id: 3, name: "Chill Chalky #3", image: "/nft-3.png", rarity: "Common" },
+    { id: 4, name: "Wavy Chalky #4", image: "/nft-4.png", rarity: "Rare" },
+    { id: 5, name: "Silly Chalky #5", image: "/nft-5.png", rarity: "Epic" },
+    { id: 6, name: "Jolly Chalky #6", image: "/nft-6.png", rarity: "Common" },
   ];
 
   const roadmapItems = [
@@ -267,26 +266,23 @@ export default function Index() {
             Each one is unique and adorable! 🎨
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {nftGallery.map((nft) => (
               <Card 
                 key={nft.id} 
-                className="card-doodle bg-white cursor-pointer hover:scale-105"
+                className="card-doodle bg-white cursor-pointer hover:scale-105 transition-transform duration-300"
               >
-                {/* NFT Preview */}
-                <div className={`w-full h-64 bg-${nft.color} doodle-border mb-4 relative`}>
-                  {/* Simple blob character */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className={`w-32 h-32 bg-${nft.color}-dark rounded-full border-4 border-doodle-black relative`}>
-                      <div className="absolute top-1/4 left-1/4 w-8 h-8 bg-white rounded-full border-3 border-doodle-black">
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-doodle-black rounded-full" />
-                      </div>
-                      <div className="absolute top-1/4 right-1/4 w-8 h-8 bg-white rounded-full border-3 border-doodle-black">
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-doodle-black rounded-full" />
-                      </div>
-                      <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-doodle-black rounded-full" />
-                    </div>
-                  </div>
+                {/* NFT Image */}
+                <div className="w-full h-64 doodle-border mb-4 relative overflow-hidden bg-sky-light">
+                  <img 
+                    src={nft.image} 
+                    alt={nft.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback: ja attēls nav atrasts, parāda placeholder
+                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="400"%3E%3Crect width="400" height="400" fill="%23B8E6F5"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="%23333"%3ENFT %23' + nft.id + '%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
                   <div className="absolute top-3 right-3 bg-white px-3 py-1 doodle-border text-sm font-bold">
                     #{nft.id}
                   </div>
