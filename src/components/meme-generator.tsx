@@ -41,7 +41,6 @@ const defaultTemplates = [
 
 // Additional 20 popular templates (hidden by default)
 const moreTemplates = [
-  { id: 7, src: "https://en.meming.world/images/en/thumb/1/17/Trade_Offer.jpg/459px-Trade_Offer.jpg", name: "Trade Offer" },
   { id: 8, src: "https://i.imgflip.com/2fm6x.jpg", name: "Mocking SpongeBob" },
   { id: 9, src: "https://i.imgflip.com/1otk96.jpg", name: "Trump Signing" },
   { id: 10, src: "https://i.imgflip.com/3lmzyx.jpg", name: "Bernie I Am Once Again" },
@@ -49,16 +48,11 @@ const moreTemplates = [
   { id: 12, src: "https://i.imgflip.com/92.jpg", name: "Bad Luck Brian" },
   { id: 13, src: "https://i.imgflip.com/1ihzfe.jpg", name: "Expanding Brain" },
   { id: 14, src: "https://i.imgflip.com/9ehk.jpg", name: "Overly Attached Girlfriend" },
-  { id: 15, src: "https://i.imgflip.com/6zkx.jpg", name: "X, X Everywhere" },
   { id: 16, src: "https://i.imgflip.com/9vct.jpg", name: "Y U No" },
   { id: 17, src: "https://i.imgflip.com/1ur9b0.jpg", name: "Spider-Man Pointing" },
   { id: 18, src: "https://i.imgflip.com/1c1uej.jpg", name: "Leonardo DiCaprio Cheers" },
-  { id: 19, src: "https://i.imgflip.com/7p0pn.jpg", name: "Roll Safe Think" },
   { id: 20, src: "https://i.imgflip.com/4/2cp1.jpg", name: "Matrix Morpheus" },
-  { id: 21, src: "https://i.imgflip.com/5gimtn.jpg", name: "Anakin Padme 4 Panel" },
   { id: 22, src: "https://i.imgflip.com/2kbn1e.jpg", name: "They're The Same Picture" },
-  { id: 23, src: "https://i.imgflip.com/1vtf2w.jpg", name: "Change My Mind" },
-  { id: 24, src: "https://i.imgflip.com/1hcn2j.jpg", name: "Arthur Fist" },
   { id: 25, src: "https://i.imgflip.com/1b42wl.jpg", name: "American Chopper Argument" },
   { id: 26, src: "https://i.imgflip.com/24y43o.jpg", name: "Batman Slapping Robin" },
 ];
