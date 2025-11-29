@@ -16,7 +16,6 @@ import {
   Star,
   Activity
 } from "lucide-react";
-import { useNFTStats } from "@/hooks/use-nft-stats";
 import Navbar from "@/components/navbar";
 
 export default function Index() {
@@ -24,9 +23,6 @@ export default function Index() {
   const maxMint = 10;
   const totalSupply = 10000;
   const price = 0; // Free mint
-
-  // Fetch reāllaika minted skaitu no blockchain
-  const { mintedCount, isLoading, isLive } = useNFTStats();
 
   const incrementQuantity = () => {
     if (mintQuantity < maxMint) {
