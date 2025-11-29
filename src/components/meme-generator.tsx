@@ -1,3 +1,9 @@
+/**
+ * Chalkies Meme Generator Component - V6.3 Debug & Refine (FIXED SCALE HANDLE)
+ * 
+ * Profesionāls meme generator ar DIRECT CANVAS CONTROLS kā Canva/Figma!
+ */
+
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,6 +47,7 @@ const defaultTemplates = [
 
 // Additional 20 popular templates (hidden by default)
 const moreTemplates = [
+  { id: 7, src: "https://i.imgflip.com/5c7lwq.jpg", name: "Trade Offer" },
   { id: 8, src: "https://i.imgflip.com/2fm6x.jpg", name: "Mocking SpongeBob" },
   { id: 9, src: "https://i.imgflip.com/1otk96.jpg", name: "Trump Signing" },
   { id: 10, src: "https://i.imgflip.com/3lmzyx.jpg", name: "Bernie I Am Once Again" },
@@ -48,11 +55,16 @@ const moreTemplates = [
   { id: 12, src: "https://i.imgflip.com/92.jpg", name: "Bad Luck Brian" },
   { id: 13, src: "https://i.imgflip.com/1ihzfe.jpg", name: "Expanding Brain" },
   { id: 14, src: "https://i.imgflip.com/9ehk.jpg", name: "Overly Attached Girlfriend" },
+  { id: 15, src: "https://i.imgflip.com/6zkx.jpg", name: "X, X Everywhere" },
   { id: 16, src: "https://i.imgflip.com/9vct.jpg", name: "Y U No" },
   { id: 17, src: "https://i.imgflip.com/1ur9b0.jpg", name: "Spider-Man Pointing" },
   { id: 18, src: "https://i.imgflip.com/1c1uej.jpg", name: "Leonardo DiCaprio Cheers" },
+  { id: 19, src: "https://i.imgflip.com/7p0pn.jpg", name: "Roll Safe Think" },
   { id: 20, src: "https://i.imgflip.com/4/2cp1.jpg", name: "Matrix Morpheus" },
+  { id: 21, src: "https://i.imgflip.com/5gimtn.jpg", name: "Anakin Padme 4 Panel" },
   { id: 22, src: "https://i.imgflip.com/2kbn1e.jpg", name: "They're The Same Picture" },
+  { id: 23, src: "https://i.imgflip.com/1vtf2w.jpg", name: "Change My Mind" },
+  { id: 24, src: "https://i.imgflip.com/1hcn2j.jpg", name: "Arthur Fist" },
   { id: 25, src: "https://i.imgflip.com/1b42wl.jpg", name: "American Chopper Argument" },
   { id: 26, src: "https://i.imgflip.com/24y43o.jpg", name: "Batman Slapping Robin" },
 ];
@@ -93,7 +105,7 @@ export default function MemeGenerator() {
   // Selection state
   const [selectedText, setSelectedText] = useState<'top' | 'bottom' | null>(null);
   
-  // Drag state - CRITICAL: Store initial values for proper calculation
+  // Drag state
   const [dragMode, setDragMode] = useState<DragMode>(null);
   const [dragStart, setDragStart] = useState<{ x: number; y: number; initialRotation?: number; initialScale?: number } | null>(null);
   
@@ -180,6 +192,7 @@ export default function MemeGenerator() {
     setTopTextTransform({ scale: 1.0, rotation: 0 });
     setBottomTextTransform({ scale: 1.0, rotation: 0 });
     setSelectedText(null);
+    console.log('🔄 Reset all positions and transforms');
   };
 
   // Calculate distance between two points
@@ -192,7 +205,7 @@ export default function MemeGenerator() {
     return Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
   };
 
-  // Check if mouse is over a handle
+  // ✅ FIXED: handle hit detection (scale handle ņem vērā rotāciju, rotate paliek globāli virs teksta)
   const checkHandleHit = (
     mouseX: number, 
     mouseY: number, 
@@ -201,47 +214,81 @@ export default function MemeGenerator() {
     transform: TextTransform,
     canvasWidth: number,
     canvasHeight: number
-  ): { type: 'rotate' | 'scale' | 'move' | null; distance?: number } => {
+  ): { type: 'rotate' | 'scale' | 'move' | null } => {
     const textX = canvasWidth * position.x;
     const textY = canvasHeight * position.y;
     const metrics = getTextMetrics(text, transform);
     
-    const rotateHandleRadius = 15; // Increased for easier clicking
-    const scaleHandleSize = 15; // Increased for easier clicking
-    const handleDistance = metrics.height * 0.8; // Distance from text center
-    
-    // Rotation handle (above text, green circle)
+    const rotateHandleRadius = 20;
+    const scaleHandleRadius = 20;
+    const handleDistance = metrics.height * 0.8;
+
+    const halfWidth = metrics.width / 2;
+    const halfHeight = metrics.height / 2;
+
+    // 🟢 ROTATE HANDLE – nav pagriezts, vienkārši virs teksta
     const rotateX = textX;
     const rotateY = textY - handleDistance;
     const distToRotate = getDistance(mouseX, mouseY, rotateX, rotateY);
-    
+
+    console.log(
+      `🟢 Rotate handle check: mouse(${mouseX.toFixed(0)}, ${mouseY.toFixed(
+        0
+      )}) vs handle(${rotateX.toFixed(0)}, ${rotateY.toFixed(
+        0
+      )}) = dist ${distToRotate.toFixed(1)} (need < ${rotateHandleRadius})`
+    );
+
     if (distToRotate < rotateHandleRadius) {
-      return { type: 'rotate', distance: distToRotate };
+      console.log("✅ HIT ROTATE HANDLE!");
+      return { type: "rotate" };
     }
-    
-    // Scale handle (top-right corner, blue square)
-    const halfWidth = metrics.width / 2;
-    const halfHeight = metrics.height / 2;
-    const scaleX = textX + halfWidth;
-    const scaleY = textY - halfHeight;
-    const distToScale = getDistance(mouseX, mouseY, scaleX, scaleY);
-    
-    if (distToScale < scaleHandleSize) {
-      return { type: 'scale', distance: distToScale };
+
+    // 🔁 Rotācijas matrica priekš scale handle (tas ir tekstam līdzi pagriezts stūris)
+    const rad = (transform.rotation * Math.PI) / 180;
+    const cos = Math.cos(rad);
+    const sin = Math.sin(rad);
+
+    const localToGlobal = (lx: number, ly: number) => ({
+      x: textX + lx * cos - ly * sin,
+      y: textY + lx * sin + ly * cos,
+    });
+
+    // 🔵 SCALE HANDLE – top-right stūris, pagriezts kopā ar tekstu
+    const scaleLocalX = halfWidth;
+    const scaleLocalY = -halfHeight;
+    const scaleGlobal = localToGlobal(scaleLocalX, scaleLocalY);
+    const distToScale = getDistance(mouseX, mouseY, scaleGlobal.x, scaleGlobal.y);
+
+    console.log(
+      `🔵 Scale handle check: mouse(${mouseX.toFixed(0)}, ${mouseY.toFixed(
+        0
+      )}) vs handle(${scaleGlobal.x.toFixed(0)}, ${scaleGlobal.y.toFixed(
+        0
+      )}) = dist ${distToScale.toFixed(1)} (need < ${scaleHandleRadius})`
+    );
+
+    if (distToScale < scaleHandleRadius) {
+      console.log("✅ HIT SCALE HANDLE!");
+      return { type: "scale" };
     }
-    
-    // Check if over text body (for moving)
+
+    // ✋ Teksta ķermenis (move)
     const distToCenter = getDistance(mouseX, mouseY, textX, textY);
     if (distToCenter < Math.max(halfWidth, halfHeight)) {
-      return { type: 'move' };
+      console.log("✅ HIT TEXT BODY (move mode)");
+      return { type: "move" };
     }
-    
+
     return { type: null };
   };
 
   // Mouse handlers for direct canvas manipulation
   const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current) {
+      console.log('❌ No canvas ref');
+      return;
+    }
     
     const rect = canvasRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -249,55 +296,66 @@ export default function MemeGenerator() {
     const canvasWidth = rect.width;
     const canvasHeight = rect.height;
     
+    console.log(`\n🖱️ MOUSE DOWN at (${mouseX.toFixed(0)}, ${mouseY.toFixed(0)})`);
+    
     // Check top text handles first (if selected or has text)
     if (topText) {
+      console.log('🔍 Checking TOP text handles...');
       const topHit = checkHandleHit(mouseX, mouseY, topText, topTextPos, topTextTransform, canvasWidth, canvasHeight);
       if (topHit.type) {
+        console.log(`✅ TOP text HIT detected: ${topHit.type}`);
         setSelectedText('top');
         setDragMode(topHit.type);
         
-        // Store initial transform values from CURRENT state
         setDragStart({ 
           x: mouseX, 
           y: mouseY,
           initialRotation: topTextTransform.rotation,
           initialScale: topTextTransform.scale
         });
+        console.log(`📌 Drag started: mode=${topHit.type}, initialRotation=${topTextTransform.rotation}, initialScale=${topTextTransform.scale}`);
         return;
       }
     }
     
     // Check bottom text handles
     if (bottomText) {
+      console.log('🔍 Checking BOTTOM text handles...');
       const bottomHit = checkHandleHit(mouseX, mouseY, bottomText, bottomTextPos, bottomTextTransform, canvasWidth, canvasHeight);
       if (bottomHit.type) {
+        console.log(`✅ BOTTOM text HIT detected: ${bottomHit.type}`);
         setSelectedText('bottom');
         setDragMode(bottomHit.type);
         
-        // Store initial transform values from CURRENT state
         setDragStart({ 
           x: mouseX, 
           y: mouseY,
           initialRotation: bottomTextTransform.rotation,
           initialScale: bottomTextTransform.scale
         });
+        console.log(`📌 Drag started: mode=${bottomHit.type}, initialRotation=${bottomTextTransform.rotation}, initialScale=${bottomTextTransform.scale}`);
         return;
       }
     }
     
     // No handle hit - deselect
+    console.log('❌ No handle hit - deselecting');
     setSelectedText(null);
     setDragMode(null);
   };
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !dragMode || !dragStart || !selectedText) return;
+    if (!canvasRef.current || !dragMode || !dragStart || !selectedText) {
+      return;
+    }
     
     const rect = canvasRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     const canvasWidth = rect.width;
     const canvasHeight = rect.height;
+    
+    console.log(`🖱️ MOUSE MOVE: dragMode=${dragMode}, mouse=(${mouseX.toFixed(0)}, ${mouseY.toFixed(0)})`);
     
     const isTop = selectedText === 'top';
     const currentPos = isTop ? topTextPos : bottomTextPos;
@@ -313,6 +371,7 @@ export default function MemeGenerator() {
       const newY = Math.max(0.05, Math.min(0.95, currentPos.y + deltaY));
       setPos({ x: newX, y: newY });
       setDragStart({ ...dragStart, x: mouseX, y: mouseY });
+      console.log(`📍 Moved text to (${newX.toFixed(2)}, ${newY.toFixed(2)})`);
       
     } else if (dragMode === 'rotate') {
       // Rotate text - calculate angle from text center to mouse
@@ -323,6 +382,7 @@ export default function MemeGenerator() {
       // Apply rotation (subtract 90 to make rotation natural - handle starts at top)
       const newRotation = angle - 90;
       setTransform({ ...currentTransform, rotation: newRotation });
+      console.log(`🔄 Rotated to ${newRotation.toFixed(1)}°`);
       
     } else if (dragMode === 'scale') {
       // Scale text - calculate distance ratio from start
@@ -332,21 +392,23 @@ export default function MemeGenerator() {
       const initialDist = getDistance(textX, textY, dragStart.x, dragStart.y);
       const currentDist = getDistance(textX, textY, mouseX, mouseY);
       
-      // Calculate scale factor based on distance change
+      console.log(`📏 Scale: initialDist=${initialDist.toFixed(1)}, currentDist=${currentDist.toFixed(1)}`);
+      
       if (initialDist > 0 && dragStart.initialScale !== undefined) {
         const scaleFactor = currentDist / initialDist;
         const baseScale = dragStart.initialScale;
         const newScale = Math.max(0.3, Math.min(3.0, baseScale * scaleFactor));
         setTransform({ ...currentTransform, scale: newScale });
+        console.log(`📏 Scaled to ${newScale.toFixed(2)}x (from base ${baseScale.toFixed(2)})`);
       }
     }
   };
 
   const handleCanvasMouseUp = () => {
-    // CRITICAL FIX V6.2: Properly reset ALL drag state
-    // This ensures next drag gesture starts with fresh initial values
+    console.log(`🖱️ MOUSE UP - resetting drag state (was: mode=${dragMode})`);
     setDragMode(null);
-    setDragStart(null); // ← This is the critical fix!
+    setDragStart(null);
+    console.log('✅ Drag state reset complete');
   };
 
   // Update cursor based on hover state
@@ -457,20 +519,21 @@ export default function MemeGenerator() {
         // Scale handle (top-right corner) - Blue square
         ctx.fillStyle = 'rgba(59, 130, 246, 0.9)';
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.setLineDash([]);
-        ctx.fillRect(halfWidth - 8, -halfHeight - 8, 16, 16);
-        ctx.strokeRect(halfWidth - 8, -halfHeight - 8, 16, 16);
+        const handleSize = 20;
+        ctx.fillRect(halfWidth - handleSize/2, -halfHeight - handleSize/2, handleSize, handleSize);
+        ctx.strokeRect(halfWidth - handleSize/2, -halfHeight - handleSize/2, handleSize, handleSize);
         
         ctx.restore();
         
-        // Rotation handle (above text) - Green circle
+        // Rotation handle (above text) - Green circle (globālās koordinātas)
         const handleDistance = metrics.height * 0.8;
         ctx.fillStyle = 'rgba(34, 197, 94, 0.9)'; // Green
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(textX, textY - handleDistance, 10, 0, Math.PI * 2);
+        ctx.arc(textX, textY - handleDistance, 12, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
         
@@ -479,7 +542,7 @@ export default function MemeGenerator() {
         ctx.lineWidth = 2;
         ctx.setLineDash([3, 3]);
         ctx.beginPath();
-        ctx.moveTo(textX, textY - handleDistance + 10);
+        ctx.moveTo(textX, textY - handleDistance + 12);
         ctx.lineTo(textX, textY - metrics.height / 2);
         ctx.stroke();
       }
@@ -545,8 +608,7 @@ export default function MemeGenerator() {
   // Share to Twitter
   const handleShare = () => {
     const text = encodeURIComponent(
-      `Check out my Chalkies meme! 🎨😂
-      #ChalkiesNFT #NFTMeme #CryptoMemes`
+      `Check out my Chalkies meme! 🎨😂 #ChalkiesNFT #NFTMeme #CryptoMemes`
     );
     const url = `https://twitter.com/intent/tweet?text=${text}`;
     window.open(url, '_blank');
@@ -561,7 +623,7 @@ export default function MemeGenerator() {
         </h1>
         <div className="inline-block bg-white doodle-border-thick doodle-shadow px-6 py-3 transform -rotate-1">
           <p className="text-xl font-bold text-doodle-black">
-            Create hilarious memes • Direct Canvas Controls • Custom Templates 🎨
+            Create hilarious memes • Direct Canvas Controls • 26+ Templates 🎨
           </p>
         </div>
       </div>
