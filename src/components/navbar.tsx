@@ -30,7 +30,7 @@ export default function Navbar() {
       hoverColor: "hover:bg-pastel-purple-dark",
     },
     {
-      label: "Stake (SOON)",
+      label: "Stake-soon",
       icon: Sparkles,
       action: () => scrollToSection(''),
       color: "bg-pastel-yellow",
