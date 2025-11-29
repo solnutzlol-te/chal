@@ -5,6 +5,10 @@ import { Home } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function MemePage() {
+  useEffect(() => {
+    document.title = "Chalkies | Memes generator";
+  }, []);
+  
   return (
     <div className="min-h-screen bg-sky overflow-hidden">
       {/* Navbar */}
