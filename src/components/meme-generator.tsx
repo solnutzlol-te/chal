@@ -502,7 +502,7 @@ export default function MemeGenerator() {
     const y = (canvas.height - img.height * scale) / 2;
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
 
-    if (topText && bottomText) {
+    if (topText && bottomText && selectedText) {
       ctx.save();
       ctx.strokeStyle = "rgba(255, 0, 255, 0.8)";
       ctx.lineWidth = 2;
@@ -859,15 +859,18 @@ export default function MemeGenerator() {
               )}
             </div>
 
-            {(alignmentGuides.showHorizontalCenter ||
-              alignmentGuides.showVerticalAlignment ||
-              alignmentGuides.showSymmetricSpacing) && (
-              <div className="mt-4 p-3 bg-pastel-purple-light rounded-lg doodle-border">
-                <p className="text-sm font-bold text-doodle-black text-center">
-                  ✨ Perfect Alignment Detected! ✨
-                </p>
-              </div>
-            )}
+{selectedText && (
+  alignmentGuides.showHorizontalCenter ||
+  alignmentGuides.showVerticalAlignment ||
+  alignmentGuides.showSymmetricSpacing
+) && (
+  <div className="mt-4 p-3 bg-pastel-purple-light rounded-lg doodle-border">
+    <p className="text-sm font-bold text-doodle-black text-center">
+      ✨ Perfect Alignment Detected! ✨
+    </p>
+  </div>
+)}
+
           </Card>
 
           <div className="grid grid-cols-2 gap-4">
