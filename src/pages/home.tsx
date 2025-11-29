@@ -20,8 +20,8 @@ import Navbar from "@/components/navbar";
 
 export default function Index() {
   const totalSupply = 10000;
-  const mintedCount = 76; // Statisks skaitlis
-  const price = 0; // Free mint
+  const mintedCount = 135; 
+  const price = 0; 
 
   const nftGallery = [
     { id: 1, name: "Flame Chalky", image: "nft-1.png", rarity: "Legendary" },
@@ -88,7 +88,6 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-sky overflow-hidden">
-      {/* Navigācijas Bārs */}
       <Navbar />
 
       {/* Hero Section */}
