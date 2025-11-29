@@ -20,7 +20,7 @@ import Navbar from "@/components/navbar";
 
 export default function Index() {
   const totalSupply = 10000;
-  const mintedCount = 3742; // Statisks skaitlis
+  const mintedCount = 76; // Statisks skaitlis
   const price = 0; // Free mint
 
   // Sample NFT data
@@ -158,13 +158,15 @@ export default function Index() {
               >
                 <Sparkles className="mr-2" /> Mint Now
               </Button>
+              <a href="https://x.com/ChalkiesMON" target="_blank" rel="noopener noreferrer">
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="btn-doodle bg-white hover:bg-pastel-yellow text-doodle-black text-2xl"
               >
-                <Heart className="mr-2" /> Join Discord
+                <Heart className="mr-2" /> Follow on X
               </Button>
+              </a>
             </div>
 
             {/* Stats - Now with LIVE blockchain data! */}
