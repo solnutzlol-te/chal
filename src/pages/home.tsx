@@ -107,7 +107,7 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-sky overflow-hidden">
       <Navbar />
-      
+      <br><br><br>
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
