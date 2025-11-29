@@ -19,6 +19,8 @@ import {
   Plus,
   Minus
 } from "lucide-react";
+import { useNFTStats } from "@/hooks/use-nft-stats";
+import Navbar from "@/components/navbar";
 
 export default function Index() {
   const [mintQuantity, setMintQuantity] = useState(1);
@@ -104,6 +106,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-sky overflow-hidden">
+      <Navbar />
       {/* Decorative clouds */}
       <div className="fixed top-10 left-10 w-32 h-16 cloud-shape opacity-80 animate-float" style={{ animationDelay: '0s' }} />
       <div className="fixed top-20 right-20 w-40 h-20 cloud-shape opacity-70 animate-float" style={{ animationDelay: '1s' }} />
