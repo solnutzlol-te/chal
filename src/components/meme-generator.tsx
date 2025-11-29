@@ -744,7 +744,7 @@ export default function MemeGenerator() {
                 ) : (
                   <>
                     <ChevronDown className="mr-2 w-4 h-4" />
-                    Show More Templates (+20)
+                    Show More Templates
                   </>
                 )}
               </Button>
