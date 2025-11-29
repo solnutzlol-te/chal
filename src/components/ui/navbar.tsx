@@ -1,21 +1,3 @@
-/**
- * Chalkies NFT Navigācijas Bārs
- * 
- * Augstās kvalitātes navigācijas komponents ar krītiņu/doodle stilu.
- * 
- * Funkcionalitāte:
- * - Desktop: Horizontāla navigācija ar hover efektiem
- * - Mobile: Hamburger izvēlne ar slide-in animāciju
- * - Sticky pozicionēšana ar z-index priekšplānā
- * - Krītiņu stila dizains ar thick borders un pastel krāsām
- * - Smooth scroll uz sekcijām
- * 
- * Navigācijas elementi:
- * - Home: Scroll uz Hero sekciju
- * - Stake: Placeholder (pagaidām tikai scroll)
- * - Collection: Scroll uz Gallery sekciju
- */
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Home, Menu, X, Sparkles } from "lucide-react";
