@@ -30,8 +30,8 @@ import {
 export default function Index() {
   const [mintQuantity, setMintQuantity] = useState(1);
   const maxMint = 10;
-  const totalSupply = 10000;
-  const minted = 3742;
+  const totalSupply = 1999;
+  const minted = 75;
   const price = 0; // Free mint
 
   const incrementQuantity = () => {
