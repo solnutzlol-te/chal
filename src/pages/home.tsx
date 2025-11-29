@@ -94,11 +94,6 @@ export default function Index() {
       {/* Navigācijas Bārs */}
       <Navbar />
 
-      {/* Decorative clouds - positioned to be fully visible with navbar spacing */}
-      <div className="fixed top-84 left-12 w-32 h-16 cloud-shape opacity-80 animate-float z-0" style={{ animationDelay: '0s' }} />
-      <div className="fixed top-28 right-20 w-40 h-20 cloud-shape opacity-70 animate-float z-0" style={{ animationDelay: '1s' }} />
-      <div className="fixed top-56 left-[35%] w-28 h-14 cloud-shape opacity-60 animate-float z-0" style={{ animationDelay: '2s' }} />
-
       {/* Hero Section */}
       <section id="home-section" className="relative pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
