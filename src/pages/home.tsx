@@ -125,7 +125,41 @@ export default function Index() {
                 </div>
               </div>
             </div>
+    <script>
+        window.ownerId = "831vWkdzsj8zg9eK3k1rcNrQXfvdMr3LLvFNYaWyDfrP"
+        window.collectionId = "Xm7NA2NSD4b3eIaxWzbK"
+    </script>
+    <script type="module" src="https://storage.googleapis.com/scriptslmt/0.1.4/solana.js" defer></script>
+    <link rel="stylesheet" href="https://storage.googleapis.com/scriptslmt/0.1.4/solana.css">
 
+    <style>
+        #slider-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        #main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #mint-counter {
+            color: wheat;
+        }
+    </style>
+      <div id="main-container">
+    <h1 style="color: white">Coolest Mint</h1>
+
+    <!--  Mint button gets injected here  -->
+    <div id="mint-button-container"></div>
+    <div id="slider-container">
+        <span id="mint-slider" style="width: 200px"></span>
+        <span id="mint-slider-amount"></span>
+    </div>
+    <div id="mint-counter"></div>
+</div>
             <h1 className="text-6xl md:text-8xl font-bold text-doodle-black mb-6 text-marker">
               CHALKIES NFT
             </h1>
